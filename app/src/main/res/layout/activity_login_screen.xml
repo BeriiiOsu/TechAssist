@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserCredentials.LoginScreen">
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardBackgroundColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:strokeColor="@color/black"
+        app:strokeWidth="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="100dp"
+        app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:id="@+id/loginContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log In"
+                android:textColor="@color/black"
+                android:textSize="45sp"
+                android:layout_marginTop="50dp"
+                android:fontFamily="sans-serif-black"
+                android:layout_gravity="center"
+                tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Access your account by entering your credentials below."
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:textAlignment="center"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:fontFamily="sans-serif"
+                android:layout_gravity="center"
+                tools:ignore="HardcodedText"/>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                style="@style/defaultTextBox"
+                app:boxBackgroundMode="outline"
+                android:hint="Email"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/emailLoginTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    tools:ignore="LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                android:autofillHints="password"
+                android:hint="Password"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                app:boxStrokeColor="@color/black"
+                android:layout_marginEnd="25dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="@color/black"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/passLoginTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/loginBtn"
+                android:background="@drawable/button_bg_black"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="15sp"
+                    android:text="Log In"
+                    android:textColor="@color/white"
+                    android:fontFamily="sans-serif-black"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/googleLoginBtn"
+                android:background="@drawable/button_bg_corners_white"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:text="Log In"
+                android:textColor="@color/white"
+                android:fontFamily="sans-serif-black"
+                tools:ignore="HardcodedText">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    tools:ignore="UseCompoundDrawables,UselessParent">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/google_icon"
+                        android:layout_marginEnd="7dp"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="15sp"
+                        android:text="Log In with Google"
+                        android:textColor="@color/black"
+                        android:fontFamily="sans-serif-black"
+                        tools:ignore="ObsoleteLayoutParam" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/forgotpassLoginBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:layout_marginTop="10dp"
+                android:text="Forgot your password?"
+                tools:ignore="HardcodedText"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif-black"
+                />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text="Don't have account?"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    tools:ignore="HardcodedText,TextSizeCheck" />
+
+                <TextView
+                    android:id="@+id/signupLoginBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:fontFamily="sans-serif-black"
+                    android:gravity="center"
+                    android:text=" Sign Up"
+                    android:textColor="#001EFF"
+                    android:textSize="15sp"
+                    tools:ignore="HardcodedText,TextSizeCheck" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif"
+        android:text="© 2025 TechAssist. All rights reserved."
+        android:textColor="#454242"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="30dp"
+        tools:ignore="HardcodedText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

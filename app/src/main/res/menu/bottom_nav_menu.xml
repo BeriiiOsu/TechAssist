@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeBtn"
+        android:title="Home"
+        android:icon="@drawable/home_icon"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/shopBtn"
+        android:title="Shop"
+        android:icon="@drawable/cart_icon"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/menuBtn"
+        android:title="Menu"
+        android:icon="@drawable/menu_icon"
+        tools:ignore="HardcodedText" />
+</menu>
