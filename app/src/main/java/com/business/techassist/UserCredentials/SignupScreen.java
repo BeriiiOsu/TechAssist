@@ -92,11 +92,10 @@ public class SignupScreen extends AppCompatActivity {
         map.put("Name", name);
         map.put("Email", email);
 
-
         databaseReference.child(userID).setValue(map).addOnCompleteListener(task ->{
             if(task.isSuccessful()){
                Toast.makeText(SignupScreen.this, "Account Created!", Toast.LENGTH_SHORT).show();
-               startActivity(new Intent(SignupScreen.this, MainActivity.class));
+               startActivity(new Intent(SignupScreen.this, LoginScreen.class));
                finish();
             } else {
                 Toast.makeText(SignupScreen.this, "Database Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();

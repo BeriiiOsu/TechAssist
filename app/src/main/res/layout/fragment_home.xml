@@ -49,6 +49,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/search_bar_background"
                 android:queryHint="Search..."
+                style="@style/SearchViewStyle"
                 android:iconifiedByDefault="false"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"

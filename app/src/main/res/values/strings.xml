@@ -2,4 +2,102 @@
     <string name="app_name">TechAssist</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="privacy_policy_text">
+        <![CDATA[
+        <b>Privacy Policy</b><br/>
+        <b>Effective Date:</b> March 08, 2025<br/><br/>
+
+        <b>1. Introduction</b><br/>
+        Welcome to TechAssist! Your privacy is important to us. This Privacy Policy explains how we collect, use, store, and protect your information when you use our services. By accessing TechAssist, you agree to the practices described in this policy.<br/><br/>
+
+        <b>2. Information We Collect</b><br/>
+        We collect the following types of information:<br/>
+        • <b>Personal Information</b> – Name, email, and address when booking services.<br/>
+        • <b>Device Information</b> – Model, operating system, and specifications for troubleshooting.<br/>
+        • <b>Payment Information</b> – Billing details for subscription plans and one-time services.<br/>
+        • <b>Service Usage Data</b> – Logs of interactions, chat messages, and service history.<br/>
+        • <b>Location Data</b> – When booking on-site repairs (with your permission).<br/>
+        • <b>Remote Access Data</b> – Temporary session logs for troubleshooting purposes.<br/><br/>
+
+        <b>3. How We Use Your Information</b><br/>
+        We use collected information to:<br/>
+        • Provide and improve our services.<br/>
+        • Facilitate remote and on-site troubleshooting.<br/>
+        • Process payments and manage subscriptions.<br/>
+        • Ensure security and prevent fraud.<br/>
+        • Offer personalized customer support.<br/>
+        • Send service updates and promotions (with your consent).<br/><br/>
+
+        <b>4. Data Security & Protection</b><br/>
+        We implement strict security measures, including:<br/>
+        • <b>End-to-end encryption</b> for remote sessions.<br/>
+        • <b>Secure payment processing</b> to protect financial transactions.<br/>
+        • <b>Limited access controls</b> ensuring only authorized personnel handle user data.<br/>
+        • <b>Real-time activity logs</b> for transparency in remote troubleshooting.<br/><br/>
+
+        <b>5. Data Sharing & Third-Party Services</b><br/>
+        We do not sell your personal data. However, we may share information with:<br/>
+        • <b>Trusted IT technicians</b> for service fulfillment (with quality control measures in place).<br/>
+        • <b>Payment processors</b> to handle transactions securely.<br/>
+        • <b>Legal authorities</b> if required to comply with laws or protect against fraud.<br/><br/>
+
+        <b>6. User Rights & Control</b><br/>
+        You have the right to:<br/>
+        • <b>Access and update</b> your personal data.<br/>
+        • <b>Request deletion</b> of your account and service history.<br/>
+        • <b>Opt-out</b> of promotional communications.<br/>
+        • <b>Review remote session logs</b> for transparency.<br/><br/>
+
+        <b>7. Children’s Privacy</b><br/>
+        TechAssist is not intended for children under 13. We do not knowingly collect data from minors.<br/><br/>
+
+        <b>8. Changes to This Privacy Policy</b><br/>
+        We may update this policy from time to time. Users will be notified of significant changes via email or in-app alerts.<br/><br/>
+
+        <b>9. Contact Us</b><br/>
+        For questions or concerns regarding this Privacy Policy, contact us at:<br/>
+        <b>Email:</b> business.techassistph@gmail.com<br/>
+        <b>Address:</b> Balayan, Batangas
+        ]]>
+    </string>
+
+    <string name="terms_of_service_text">
+        <![CDATA[
+        <b>Terms of Service</b><br/>
+        <b>Effective Date:</b> March 08, 2025<br/><br/>
+
+        <b>1. Introduction</b><br/>
+        By using TechAssist, you agree to these Terms of Service. This document outlines the rules and guidelines for using our platform.<br/><br/>
+
+        <b>2. User Responsibilities</b><br/>
+        Users of TechAssist agree to the following:<br/>
+        • You must provide accurate information when using our services.<br/>
+        • You agree not to misuse TechAssist for fraudulent activities.<br/>
+        • You are responsible for maintaining the confidentiality of your account.<br/><br/>
+
+        <b>3. Services Provided</b><br/>
+        TechAssist offers the following services:<br/>
+        • Troubleshooting assistance, device diagnostics, and IT support.<br/>
+        • Some services may require payment, and fees will be disclosed before purchase.<br/><br/>
+
+        <b>4. Limitation of Liability</b><br/>
+        TechAssist is not responsible for:<br/>
+        • Any data loss, hardware damage, or indirect damages caused by the use of our services.<br/><br/>
+
+        <b>5. Termination</b><br/>
+        We reserve the right to:<br/>
+        • Suspend or terminate your access if you violate these terms.<br/><br/>
+
+        <b>6. Changes to Terms</b><br/>
+        TechAssist may update these terms from time to time.<br/>
+        • Continued use of our services implies acceptance of the changes.<br/><br/>
+
+        <b>7. Contact Us</b><br/>
+        For any questions or concerns regarding these Terms of Service, you may contact us:<br/>
+        <b>Email:</b> business.techassistph@gmail.com<br/>
+        <b>Address:</b> Balayan, Batangas
+        ]]>
+    </string>
+
 </resources>
