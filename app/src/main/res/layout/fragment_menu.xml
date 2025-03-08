@@ -88,7 +88,7 @@
                         android:layout_height="40dp"
                         android:layout_alignParentBottom="true"
                         android:layout_marginStart="15dp"
-                        android:src="@drawable/baseline_person_24"
+                        android:src="@drawable/user_icon"
                         tools:ignore="ContentDescription" />
 
                     <LinearLayout
@@ -169,7 +169,7 @@
                         android:layout_centerVertical="true"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/cart_icon"
+                        android:src="@drawable/cart_new_icon"
                         android:layout_marginStart="15dp"
                         tools:ignore="ContentDescription" />
 
@@ -214,11 +214,10 @@
 
                     <ImageView
                         android:id="@+id/orderNaN"
-                        android:layout_centerVertical="true"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/shipping_icon"
                         android:layout_marginStart="15dp"
+                        android:src="@drawable/track_order"
                         tools:ignore="ContentDescription" />
 
                     <ImageView
@@ -265,7 +264,7 @@
                         android:layout_centerVertical="true"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/baseline_message_24"
+                        android:src="@drawable/messages"
                         android:layout_marginStart="15dp"
                         tools:ignore="ContentDescription" />
 
@@ -311,7 +310,7 @@
                                 android:id="@+id/settingsNaN"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:src="@drawable/baseline_settings_24"
+                                android:src="@drawable/settings_new_icon"
                                 android:layout_centerVertical="true"/>
 
                             <TextView

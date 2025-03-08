@@ -4,12 +4,12 @@
     <item
         android:id="@+id/homeBtn"
         android:title="Home"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/home"
         tools:ignore="HardcodedText" />
     <item
         android:id="@+id/shopBtn"
         android:title="Shop"
-        android:icon="@drawable/cart_icon"
+        android:icon="@drawable/cart"
         tools:ignore="HardcodedText" />
     <item
         android:id="@+id/menuBtn"

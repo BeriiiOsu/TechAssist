@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1044964394656",
+    "firebase_url": "https://techassist-dbcd5-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "techassist-dbcd5",
+    "storage_bucket": "techassist-dbcd5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044964394656:android:4f8b2960f031fa5a762bc5",
+        "android_client_info": {
+          "package_name": "com.business.techassist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044964394656-47itcrb1osgvu6ant10gdln2h00gl3d0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.business.techassist",
+            "certificate_hash": "999b3a2c36f35662a23322135c9da42eb957d183"
+          }
+        },
+        {
+          "client_id": "1044964394656-e9pquf631ut1uvk6n11qpn7migse4kht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGK20pKlyqThZ3bp98VSgw6xq6JWP0JlA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044964394656-e9pquf631ut1uvk6n11qpn7migse4kht.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

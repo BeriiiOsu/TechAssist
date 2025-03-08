@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,7 +16,16 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.business.techassist.MainActivity;
 import com.business.techassist.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,6 +40,9 @@ public class SignupScreen extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     DatabaseReference databaseReference;
 
+    private static final int GOOGLE_SIGN_IN_CODE = 100; // Request Code for Google Sign-In
+    GoogleSignInClient googleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +53,15 @@ public class SignupScreen extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)) // Make sure you have this in strings.xml
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, googleSignInOptions);
 
         nameSignupTxt = findViewById(R.id.nameSignupTxt);
         emailSignupTxt = findViewById(R.id.emailSignupTxt);
@@ -51,10 +70,68 @@ public class SignupScreen extends AppCompatActivity {
         googleSignupBtn = findViewById(R.id.googleSignupBtn);
         loginSignupBtn = findViewById(R.id.loginSignupBtn);
 
-
+        googleSignupBtn.setOnClickListener(view -> signInWithGoogle());
         signUpBtn.setOnClickListener(view -> registerUser(nameSignupTxt.getText().toString(), emailSignupTxt.getText().toString(), passSignupTxt.getText().toString()));
         loginSignupBtn.setOnClickListener(view -> loginUser());
     }
+
+    private void signInWithGoogle() {
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, GOOGLE_SIGN_IN_CODE);
+        });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GOOGLE_SIGN_IN_CODE) {
+            try {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                if (account != null) {
+                    authenticateWithFirebase(account);
+                }
+            } catch (ApiException e) {
+//                Toast.makeText(this, "Google Sign-In Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+    private void authenticateWithFirebase(GoogleSignInAccount account) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        if (firebaseUser != null) {
+                            saveUserToDatabase(firebaseUser);
+                        }
+                    } else {
+                        Toast.makeText(SignupScreen.this, "Google Authentication Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    private void saveUserToDatabase(FirebaseUser firebaseUser) {
+        String userID = firebaseUser.getUid();
+        String name = firebaseUser.getDisplayName();
+        String email = firebaseUser.getEmail();
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userID", userID);
+        map.put("Name", name);
+        map.put("Email", email);
+
+        databaseReference.child(userID).setValue(map).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                startActivity(new Intent(SignupScreen.this, MainActivity.class));
+                finish();
+            } else {
+                Toast.makeText(SignupScreen.this, "Database Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
     private void registerUser(String name, String email, String pass) {
         if (name.isEmpty() || email.isEmpty() || pass.isEmpty()) {

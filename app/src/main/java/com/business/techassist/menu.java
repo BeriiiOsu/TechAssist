@@ -1,5 +1,6 @@
 package com.business.techassist;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.business.techassist.UserCredentials.LoginScreen;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,8 +36,15 @@ import com.google.firebase.database.ValueEventListener;
  */
 public class menu extends Fragment {
 
-    RelativeLayout logoutProfileBtn;
+    RelativeLayout logoutProfileBtn,
+            profileMenuBtn,
+            cartMenuBtn,
+            trackOrderMenuBtn,
+            messageMenuBtn,
+            settingsProfileBtn,
+            supportProfileBtn;
     TextView nameUser, emailUser, PP_Btn, TOS_Btn;
+    ImageView userPicture;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,33 +91,59 @@ public class menu extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        logoutProfileBtn = view.findViewById(R.id.logoutProfileBtn);
-        nameUser = view.findViewById(R.id.nameUser);
-        emailUser = view.findViewById(R.id.emailUser);
-        PP_Btn = view.findViewById(R.id.PP_Btn);
-        TOS_Btn = view.findViewById(R.id.TOS_Btn);
+        loadComponents(view);
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
 
+        profileMenuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         if(firebaseUser != null){
             String userID = firebaseUser.getUid();
 
+            String name = firebaseUser.getDisplayName();  // Google Display Name
+            String email = firebaseUser.getEmail();       // Google Email
+
+            // Set Name and Email
+            if (name != null) {
+                String firstName = name.split(" ")[0]; // Get first name only
+                nameUser.setText(firstName);
+            } else {
+                nameUser.setText("User");
+            }
+
+            if (email != null) {
+                emailUser.setText(email);
+            } else {
+                emailUser.setText("Email not found");
+            }
+
+            Glide.with(this)
+                    .load(R.drawable.user_icon)
+                    .placeholder(R.drawable.user_icon) // Use a default drawable
+                    .error(R.drawable.user_icon) // If loading fails
+                    .into(userPicture);
+
             databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()){
-                        String name = snapshot.child("Name").getValue(String.class);
-                        String email = snapshot.child("Email").getValue(String.class);
+                    if(snapshot.exists()) {
+                        String dbName = snapshot.child("Name").getValue(String.class);
+                        String dbEmail = snapshot.child("Email").getValue(String.class);
 
-                        if(name != null){
-                            String firstName = name.split(" ")[0];
-                            nameUser.setText(firstName);
+                        if (dbName != null && name == null) {
+                            nameUser.setText(dbName);
                         }
-                        emailUser.setText(email);
-                    }else{
-                        nameUser.setText("User not found");
-                        emailUser.setText("Email not found");
+
+                        if (dbEmail != null && email == null) {
+                            emailUser.setText(dbEmail);
+                        }
                     }
                 }
 
@@ -117,32 +152,22 @@ public class menu extends Fragment {
                     Toast.makeText(getContext(), "Database Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }else{
+            nameUser.setText("Guest");
+            emailUser.setText("Not logged in");
         }
 
-        PP_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPP(getActivity());
-            }
-        });
+        PP_Btn.setOnClickListener(view1 -> showPP(getActivity()));
 
-        TOS_Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showTOS(getActivity());
-            }
-        });
+        TOS_Btn.setOnClickListener(view12 -> showTOS(getActivity()));
 
-        logoutProfileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), LoginScreen.class);
-                startActivity(intent);
+        logoutProfileBtn.setOnClickListener(view13 -> {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent(getActivity(), LoginScreen.class);
+            startActivity(intent);
 
-                if(getActivity() != null){
-                    getActivity().finish();
-                }
+            if(getActivity() != null){
+                getActivity().finish();
             }
         });
 
@@ -150,9 +175,24 @@ public class menu extends Fragment {
         return view;
     }
 
+    private  void loadComponents(View view){
+        userPicture = view.findViewById(R.id.userPicture);
+        logoutProfileBtn = view.findViewById(R.id.logoutProfileBtn);
+        nameUser = view.findViewById(R.id.nameUser);
+        emailUser = view.findViewById(R.id.emailUser);
+        PP_Btn = view.findViewById(R.id.PP_Btn);
+        TOS_Btn = view.findViewById(R.id.TOS_Btn);
+        profileMenuBtn = view.findViewById(R.id.profileMenuBtn);
+        cartMenuBtn = view.findViewById(R.id.cartMenuBtn);
+        trackOrderMenuBtn = view.findViewById(R.id.trackOrderMenuBtn);
+        messageMenuBtn = view.findViewById(R.id.messageMenuBtn);
+        settingsProfileBtn = view.findViewById(R.id.settingsProfileBtn);
+        supportProfileBtn = view.findViewById(R.id.supportProfileBtn);
+    }
+
     private void showPP(Context context){
         Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.activity_popup_privacy_policy);
+        dialog.setContentView(R.layout.popup_privacy_policy);
 
         TextView privacyTextView = dialog.findViewById(R.id.privacy_policy_text);
 
@@ -168,7 +208,7 @@ public class menu extends Fragment {
 
     private void showTOS(Context context){
         Dialog dialog = new Dialog(context);
-        dialog.setContentView(R.layout.activity_popup_tos);
+        dialog.setContentView(R.layout.popup_tos);
 
         TextView privacyTextView = dialog.findViewById(R.id.terms_of_service_text);
 
