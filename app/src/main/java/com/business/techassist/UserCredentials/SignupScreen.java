@@ -119,6 +119,7 @@ public class SignupScreen extends AppCompatActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("userID", userID);
         map.put("Name", name);
+        map.put("Role", "User");
         map.put("Email", email);
 
         databaseReference.child(userID).setValue(map).addOnCompleteListener(task -> {
@@ -134,12 +135,24 @@ public class SignupScreen extends AppCompatActivity {
 
 
     private void registerUser(String name, String email, String pass) {
-        if (name.isEmpty() || email.isEmpty() || pass.isEmpty()) {
-            Toast.makeText(this, "All fields are required!", Toast.LENGTH_SHORT).show();
+        if(name.isEmpty()){
+            nameSignupTxt.setError("Name is required.");
+            nameSignupTxt.requestFocus();
+            return;
+        }
+        if(email.isEmpty()){
+            emailSignupTxt.setError("Email is required.");
+            emailSignupTxt.requestFocus();
+            return;
+        }
+        if(pass.isEmpty()){
+            passSignupTxt.setError("Password is required.");
+            passSignupTxt.requestFocus();
             return;
         }
         if(pass.length() < 8){
-            Toast.makeText(this, "Password must 8 or more characters long!", Toast.LENGTH_SHORT).show();
+            passSignupTxt.setError("Password must be greater than 8 characters.");
+            passSignupTxt.requestFocus();
             return;
         }
 
@@ -167,6 +180,7 @@ public class SignupScreen extends AppCompatActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("userID", userID);
         map.put("Name", name);
+        map.put("Role", "User");
         map.put("Email", email);
 
         databaseReference.child(userID).setValue(map).addOnCompleteListener(task ->{

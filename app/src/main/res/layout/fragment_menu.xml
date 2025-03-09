@@ -67,7 +67,6 @@
                 >
 
                 <RelativeLayout
-                    android:id="@+id/profileMenuBtn"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     tools:ignore="TextSizeCheck">
@@ -126,6 +125,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/profileMenuBtn"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignParentEnd="true"
@@ -148,7 +148,6 @@
                     android:layout_marginEnd="15dp"/>
 
                 <RelativeLayout
-                    android:id="@+id/cartMenuBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
@@ -174,6 +173,7 @@
                         tools:ignore="ContentDescription" />
 
                     <ImageView
+                        android:id="@+id/cartMenuBtn"
                         android:layout_marginBottom="5dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="15dp"
@@ -196,7 +196,6 @@
                     android:layout_marginEnd="15dp"/>
 
                 <RelativeLayout
-                    android:id="@+id/trackOrderMenuBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
@@ -221,6 +220,7 @@
                         tools:ignore="ContentDescription" />
 
                     <ImageView
+                        android:id="@+id/trackOrderMenuBtn"
                         android:layout_marginBottom="5dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="15dp"
@@ -243,7 +243,6 @@
                     android:layout_marginEnd="15dp"/>
 
                 <RelativeLayout
-                    android:id="@+id/messageMenuBtn"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
@@ -269,6 +268,7 @@
                         tools:ignore="ContentDescription" />
 
                     <ImageView
+                        android:id="@+id/messageMenuBtn"
                         android:layout_marginBottom="5dp"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="15dp"

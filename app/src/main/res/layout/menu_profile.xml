@@ -4,7 +4,342 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+
     tools:context=".menucomponents.profileMenu">
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-black"
+            android:text="Personal Information"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_marginStart="15dp"
+            tools:ignore="HardcodedText"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/relativeLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingBottom="55dp"
+        android:fillViewport="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants">
+
+        <LinearLayout
+            android:background="@drawable/box_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:paddingStart="10dp"
+            android:paddingBottom="20dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Photo"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif-black"
+                android:textSize="18sp"
+                tools:ignore="HardcodedText" />
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
+
+                <ImageView
+                    android:id="@+id/profilePicture"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:src="@drawable/null_picture"
+                    tools:ignore="ContentDescription,ImageContrastCheck" />
+
+                <RelativeLayout
+                    android:id="@+id/uploadPhotoProfileBtn"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/box_btn"
+                    tools:ignore="TextSizeCheck">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Upload photo"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/removePhotoBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:fontFamily="sans-serif-black"
+                    android:text="Remove photo"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="10sp"
+                    tools:ignore="HardcodedText,SmallSp" />
+                
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                app:boxBackgroundMode="outline"
+                android:hint="Name"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/nameProfileTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints="emailAddress"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                style="@style/defaultTextBox"
+                app:boxBackgroundMode="outline"
+                android:hint="Email"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/emailProfileTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"
+                    tools:ignore="LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:boxBackgroundMode="outline"
+                    android:hint="Select a Country"
+
+                    android:textColorHint="@color/black"
+                    app:endIconTint="@color/black"
+                    app:endIconMode="dropdown_menu"
+                    tools:ignore="HardcodedText">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/dropdownTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawablePadding="8dp"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:textColor="@color/black"
+                        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                style="@style/defaultTextBox"
+                app:boxBackgroundMode="outline"
+                android:hint="Street address"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/streetAddressProfileTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                style="@style/defaultTextBox"
+                app:boxBackgroundMode="outline"
+                android:hint="City"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/cityProfileTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                style="@style/defaultTextBox"
+                app:boxBackgroundMode="outline"
+                android:hint="State / Province"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/provinceProfileTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="25dp"
+                style="@style/defaultTextBox"
+                app:boxBackgroundMode="outline"
+                android:hint="ZIP / Postal code"
+                android:textColorHint="@color/black"
+                app:boxStrokeWidth="2dp"
+                android:layout_marginEnd="25dp"
+                tools:ignore="HardcodedText">
+
+                <EditText
+                    android:id="@+id/postalProfileTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:textColor="@color/black"
+                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="25dp">
+
+                <RelativeLayout
+                    android:id="@+id/saveProfileBtn"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/box_btn"
+                    tools:ignore="TextSizeCheck"
+                    android:paddingBottom="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Save changes"
+                        android:textColor="@color/black"
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/cancelProfileBtn"
+                    android:paddingBottom="20dp"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/box_black_btn"
+                    tools:ignore="TextSizeCheck">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="sans-serif-black"
+                        android:text="Discard"
+                        android:textColor="@color/white"
+                        android:textSize="10sp"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

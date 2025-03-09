@@ -21,6 +21,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.business.techassist.UserCredentials.LoginScreen;
+import com.business.techassist.menucomponents.profileMenu;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +31,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,14 +42,16 @@ import com.google.firebase.database.ValueEventListener;
 public class menu extends Fragment {
 
     RelativeLayout logoutProfileBtn,
+            settingsProfileBtn,
+            supportProfileBtn;
+
+    TextView nameUser, emailUser, PP_Btn, TOS_Btn;
+    ImageView userPicture,
             profileMenuBtn,
             cartMenuBtn,
             trackOrderMenuBtn,
-            messageMenuBtn,
-            settingsProfileBtn,
-            supportProfileBtn;
-    TextView nameUser, emailUser, PP_Btn, TOS_Btn;
-    ImageView userPicture;
+            messageMenuBtn;
+    String currentUserId = "";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,11 +102,14 @@ public class menu extends Fragment {
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-
+        if (firebaseUser != null) {
+            currentUserId = firebaseUser.getUid();
+        }
+        loadProfileImage();
         profileMenuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(getActivity(), profileMenu.class));
             }
         });
 
@@ -123,11 +133,11 @@ public class menu extends Fragment {
                 emailUser.setText("Email not found");
             }
 
-            Glide.with(this)
-                    .load(R.drawable.user_icon)
-                    .placeholder(R.drawable.user_icon) // Use a default drawable
-                    .error(R.drawable.user_icon) // If loading fails
-                    .into(userPicture);
+//            Glide.with(this)
+//                    .load(R.drawable.user_icon)
+//                    .placeholder(R.drawable.user_icon) // Use a default drawable
+//                    .error(R.drawable.user_icon) // If loading fails
+//                    .into(userPicture);
 
             databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @SuppressLint("SetTextI18n")
@@ -137,13 +147,20 @@ public class menu extends Fragment {
                         String dbName = snapshot.child("Name").getValue(String.class);
                         String dbEmail = snapshot.child("Email").getValue(String.class);
 
-                        if (dbName != null && name == null) {
+                        if (dbName != null && !dbName.isEmpty()) {
                             nameUser.setText(dbName);
+                        } else {
+                            nameUser.setText("No name found");
                         }
 
-                        if (dbEmail != null && email == null) {
+                        if (dbEmail != null && !dbEmail.isEmpty()) {
                             emailUser.setText(dbEmail);
+                        } else {
+                            emailUser.setText("Email not found");
                         }
+
+                        nameUser.invalidate();
+                        nameUser.requestLayout();
                     }
                 }
 
@@ -162,17 +179,60 @@ public class menu extends Fragment {
         TOS_Btn.setOnClickListener(view12 -> showTOS(getActivity()));
 
         logoutProfileBtn.setOnClickListener(view13 -> {
-            FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(getActivity(), LoginScreen.class);
-            startActivity(intent);
+            GoogleSignIn.getClient(requireActivity(), new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build())
+                    .signOut()
+                    .addOnCompleteListener(task -> {
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(getActivity(), LoginScreen.class);
+                        startActivity(intent);
+                        if (getActivity() != null) {
+                            getActivity().finish();
+                        }
+                    });
 
-            if(getActivity() != null){
-                getActivity().finish();
-            }
         });
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void loadProfileImage() {
+        DatabaseReference userRef = FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(currentUserId)
+                .child("profileImageUrl");
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String imageUrl = snapshot.getValue(String.class);
+                    if (imageUrl != null && !imageUrl.isEmpty() && isAdded()) {
+                        Glide.with(requireActivity())
+                                .load(imageUrl)
+                                .into(userPicture);
+                    } else {
+                        loadDefaultImage();
+                    }
+                } else {
+                    loadDefaultImage();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error if needed
+            }
+        });
+
+    }
+
+    private void loadDefaultImage() {
+        if (isAdded()) {
+            Glide.with(requireActivity())
+                    .load(R.drawable.user_icon)
+                    .into(userPicture);
+        }
     }
 
     private  void loadComponents(View view){

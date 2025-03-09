@@ -4,4 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#D3D3D3</color>
     <color name="gray">#808080</color>
+
+    <color name="my_primary">#FF5964</color>
+    <color name="my_secondary">#FFE74C</color>
+
+    <color name="off_white">#FAFAFA</color>
+
+    <color name="chat_color_sender">#1E88E5</color>
+    <color name="chat_color_receiver">#7CB342</color>
+
 </resources>
