@@ -26,8 +26,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -38,9 +37,9 @@ public class SignupScreen extends AppCompatActivity {
     RelativeLayout signUpBtn, googleSignupBtn;
     TextView loginSignupBtn;
     FirebaseAuth firebaseAuth;
-    DatabaseReference databaseReference;
+    FirebaseFirestore firestore;
 
-    private static final int GOOGLE_SIGN_IN_CODE = 100; // Request Code for Google Sign-In
+    private static final int GOOGLE_SIGN_IN_CODE = 100;
     GoogleSignInClient googleSignInClient;
 
     @Override
@@ -54,10 +53,10 @@ public class SignupScreen extends AppCompatActivity {
             return insets;
         });
         firebaseAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        firestore = FirebaseFirestore.getInstance();
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id)) // Make sure you have this in strings.xml
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -81,6 +80,7 @@ public class SignupScreen extends AppCompatActivity {
             startActivityForResult(signInIntent, GOOGLE_SIGN_IN_CODE);
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -93,10 +93,11 @@ public class SignupScreen extends AppCompatActivity {
                     authenticateWithFirebase(account);
                 }
             } catch (ApiException e) {
-//                Toast.makeText(this, "Google Sign-In Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                // Handle error
             }
         }
     }
+
     private void authenticateWithFirebase(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
@@ -104,97 +105,112 @@ public class SignupScreen extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                         if (firebaseUser != null) {
-                            saveUserToDatabase(firebaseUser);
+                            checkUserInFirestore(firebaseUser);
                         }
                     } else {
                         Toast.makeText(SignupScreen.this, "Google Authentication Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-    private void saveUserToDatabase(FirebaseUser firebaseUser) {
+
+    private void checkUserInFirestore(FirebaseUser firebaseUser) {
+        firestore.collection("Users").document(firebaseUser.getUid()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // User already exists, proceed to main screen
+                        startActivity(new Intent(SignupScreen.this, MainActivity.class));
+                        finish();
+                    } else {
+                        // User does not exist, save details in Firestore
+                        saveUserToFirestore(firebaseUser);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(SignupScreen.this, "Error checking Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void saveUserToFirestore(FirebaseUser firebaseUser) {
         String userID = firebaseUser.getUid();
         String name = firebaseUser.getDisplayName();
         String email = firebaseUser.getEmail();
+        String profilePicUrl = (firebaseUser.getPhotoUrl() != null) ? firebaseUser.getPhotoUrl().toString() : "";
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userID", userID);
-        map.put("Name", name);
-        map.put("Role", "User");
-        map.put("Email", email);
+        HashMap<String, Object> user = new HashMap<>();
+        user.put("userID", userID);
+        user.put("Name", name);
+        user.put("Role", "User");
+        user.put("Email", email);
+        user.put("ProfilePic", profilePicUrl); // Store profile picture
 
-        databaseReference.child(userID).setValue(map).addOnCompleteListener(task -> {
+        firestore.collection("Users").document(userID).set(user).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 startActivity(new Intent(SignupScreen.this, MainActivity.class));
                 finish();
             } else {
-                Toast.makeText(SignupScreen.this, "Database Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SignupScreen.this, "Firestore Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-
-
     private void registerUser(String name, String email, String pass) {
-        if(name.isEmpty()){
-            nameSignupTxt.setError("Name is required.");
-            nameSignupTxt.requestFocus();
-            return;
-        }
-        if(email.isEmpty()){
-            emailSignupTxt.setError("Email is required.");
-            emailSignupTxt.requestFocus();
-            return;
-        }
-        if(pass.isEmpty()){
-            passSignupTxt.setError("Password is required.");
-            passSignupTxt.requestFocus();
-            return;
-        }
-        if(pass.length() < 8){
-            passSignupTxt.setError("Password must be greater than 8 characters.");
-            passSignupTxt.requestFocus();
+        if (name.isEmpty() || email.isEmpty() || pass.isEmpty() || pass.length() < 8) {
+            Toast.makeText(this, "Please fill out all fields correctly.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        firebaseAuth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(task ->{
-                    if(task.isSuccessful()){
-                        Objects.requireNonNull(firebaseAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(isSent ->{
-                            if(isSent.isSuccessful()){
-                                Toast.makeText(SignupScreen.this, "Verification email sent. Please check your email.", Toast.LENGTH_LONG).show();
-                                String userID = firebaseAuth.getCurrentUser().getUid();
-                                createUserDatabase(userID, name, email);
-                            }else {
-                                Toast.makeText(SignupScreen.this, "Failed to send verification email: " + Objects.requireNonNull(isSent.getException()).getMessage(), Toast.LENGTH_LONG).show();
-                            }
-
-                        });
-
-                    }else {
-                        Toast.makeText(SignupScreen.this, "Signup Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+        // Check if the user already exists in Firestore before signing up
+        firestore.collection("Users")
+                .whereEqualTo("Email", email)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // User already exists in Firestore
+                        emailSignupTxt.setError("User already exists!");
+//                        Toast.makeText(SignupScreen.this, "User already exists!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        // User does NOT exist, proceed with Firebase Authentication signup
+                        firebaseAuth.createUserWithEmailAndPassword(email, pass)
+                                .addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                        if (firebaseUser != null) {
+                                            firebaseUser.sendEmailVerification().addOnCompleteListener(isSent -> {
+                                                if (isSent.isSuccessful()) {
+                                                    Toast.makeText(SignupScreen.this, "Verification email sent.", Toast.LENGTH_LONG).show();
+                                                    saveUserToFirestore(firebaseUser, name, email);
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        Toast.makeText(SignupScreen.this, "Signup Failed: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(SignupScreen.this, "Error checking Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
-    private void createUserDatabase(String userID, String name, String email) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("userID", userID);
-        map.put("Name", name);
-        map.put("Role", "User");
-        map.put("Email", email);
 
-        databaseReference.child(userID).setValue(map).addOnCompleteListener(task ->{
-            if(task.isSuccessful()){
-               Toast.makeText(SignupScreen.this, "Account Created!", Toast.LENGTH_SHORT).show();
-               startActivity(new Intent(SignupScreen.this, LoginScreen.class));
-               finish();
-            } else {
-                Toast.makeText(SignupScreen.this, "Database Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+    private void saveUserToFirestore(FirebaseUser firebaseUser, String name, String email) {
+        String userID = firebaseUser.getUid();
+        HashMap<String, Object> user = new HashMap<>();
+        user.put("userID", userID);
+        user.put("Name", name);
+        user.put("Role", "User");
+        user.put("Email", email);
+
+        firestore.collection("Users").document(userID).set(user).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                startActivity(new Intent(SignupScreen.this, LoginScreen.class));
+                finish();
             }
         });
     }
 
-    private void loginUser(){
+    private void loginUser() {
         startActivity(new Intent(SignupScreen.this, LoginScreen.class));
         finish();
     }

@@ -31,7 +31,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
-
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,6 +69,14 @@ public class LoginScreen extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(LoginScreen.this, options);
 
         firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseAuth.addAuthStateListener(firebaseAuth -> {
+//            FirebaseUser user = firebaseAuth.getCurrentUser();
+//            if (user != null) {
+//                // User is logged in
+//                startActivity(new Intent(LoginScreen.this, MainActivity.class));
+//                finish();
+//            }
+//        });
 
 
         emailLoginTxt = findViewById(R.id.emailLoginTxt);
@@ -79,14 +86,6 @@ public class LoginScreen extends AppCompatActivity {
         forgotpassLoginBtn = findViewById(R.id.forgotpassLoginBtn);
         signupLoginBtn = findViewById(R.id.signupLoginBtn);
 
-        //This checks if the user stayed signed in
-        if (firebaseAuth.getCurrentUser() != null) {
-            // User is signed in
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-
-
         googleLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,75 +93,93 @@ public class LoginScreen extends AppCompatActivity {
                     Intent signInIntent = googleSignInClient.getSignInIntent();
                     activityResultLauncher.launch(signInIntent);
                 });
-//                Intent intent =  googleSignInClient.getSignInIntent();
-//                activityResultLauncher.launch(intent);
             }
         });
         loginBtn.setOnClickListener(view -> loginUser());
         signupLoginBtn.setOnClickListener(view -> signupUser());
     }
-//google signin
-    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-    @Override
-    public void onActivityResult(ActivityResult o) {
-        if(o.getResultCode() == RESULT_OK){
-            Task<GoogleSignInAccount> accountTask = GoogleSignIn.getSignedInAccountFromIntent(o.getData());
-            try{
-                GoogleSignInAccount signInAccount = accountTask.getResult(ApiException.class);
-                AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
-                firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
 
+    private final ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult o) {
+            if (o.getResultCode() == RESULT_OK) {
+                Task<GoogleSignInAccount> accountTask = GoogleSignIn.getSignedInAccountFromIntent(o.getData());
+                try {
+                    GoogleSignInAccount signInAccount = accountTask.getResult(ApiException.class);
+                    AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
+                    firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             if (user != null) {
-                                checkRole(user.getUid());
+                                addUserToFirestore(user); // Ensure user data is stored in Firestore
                             }
-//                            firebaseAuth = FirebaseAuth.getInstance();
-//                            Glide.with(LoginScreen.this).load(Objects.requireNonNull(firebaseAuth.getCurrentUser()).getPhotoUrl()).into(userProfile);
-//                                startActivity(new Intent(LoginScreen.this, MainActivity.class));
-//                                finish();
-                        }else{
+                        } else {
                             Toast.makeText(LoginScreen.this, "Sign In Failed: " + task.getException(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                });
-            } catch (ApiException e) {
-                Toast.makeText(LoginScreen.this, "Google Sign-In Error: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
-                Log.e("GoogleSignIn", "ApiException: ", e);
+                    });
+                } catch (ApiException e) {
+                    Toast.makeText(LoginScreen.this, "Google Sign-In Error: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
+                    Log.e("GoogleSignIn", "ApiException: ", e);
+                }
             }
         }
+    });
+
+
+    private void addUserToFirestore(FirebaseUser user) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = user.getUid();
+
+        db.collection("Users").document(uid).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !task.getResult().exists()) {
+                // User does not exist, create a new entry
+                Map<String, Object> userData = new HashMap<>();
+                userData.put("userID", uid);
+                userData.put("Name", user.getDisplayName());
+                userData.put("Email", user.getEmail());
+                userData.put("ProfilePic", user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
+                userData.put("Role", "User"); // Default role
+
+                db.collection("Users").document(uid).set(userData)
+                        .addOnSuccessListener(aVoid -> {
+                            Log.d("Firestore", "User added successfully");
+                            checkRole(uid);
+                        })
+                        .addOnFailureListener(e -> Log.e("Firestore", "Error adding user", e));
+            } else {
+                // User already exists, just proceed
+                checkRole(uid);
+            }
+        });
     }
-});
 
 
-    //normal signin
-    private void loginUser(){
-        if(emailLoginTxt.getText().toString().isEmpty()) {
+    private void loginUser() {
+        if (emailLoginTxt.getText().toString().isEmpty()) {
             emailLoginTxt.setError("Email is required.");
             emailLoginTxt.requestFocus();
             return;
         }
-        if(passLoginTxt.getText().toString().isEmpty()) {
+        if (passLoginTxt.getText().toString().isEmpty()) {
             passLoginTxt.setError("Password is required.");
             passLoginTxt.requestFocus();
             return;
         }
-        firebaseAuth.signInWithEmailAndPassword(emailLoginTxt.getText().toString(), passLoginTxt.getText().toString()).addOnCompleteListener(isComplete ->{
-            if(isComplete.isSuccessful()){
-                if(Objects.requireNonNull(firebaseAuth.getCurrentUser()).isEmailVerified()){
-                        checkRole(firebaseAuth.getCurrentUser().getUid());
-//                    startActivity(new Intent(LoginScreen.this, MainActivity.class));
-//                    finish();
-                }else{
-                    Toast.makeText(getApplicationContext(), "Please verify your email first!", Toast.LENGTH_SHORT).show();
+        firebaseAuth.signInWithEmailAndPassword(emailLoginTxt.getText().toString(), passLoginTxt.getText().toString()).addOnCompleteListener(isComplete -> {
+            if (isComplete.isSuccessful()) {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    if (currentUser.isEmailVerified()) {
+                        checkRole(currentUser.getUid());
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Please verify your email first!", Toast.LENGTH_SHORT).show();
+                        firebaseAuth.signOut();
+                    }
                 }
-            }else{
-                Toast.makeText(LoginScreen.this, "Login Failed: " + Objects.requireNonNull(isComplete.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(LoginScreen.this, "Account not found!", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void checkRole(String uid) {
@@ -172,19 +189,28 @@ public class LoginScreen extends AppCompatActivity {
                 String role = documentSnapshot.getString("Role");
                 if ("Admin".equals(role)) {
                     Toast.makeText(LoginScreen.this, "Under development", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginScreen.this, MainActivity.class));
+                    finish();
                 } else {
                     startActivity(new Intent(LoginScreen.this, MainActivity.class));
+                    finish();
                 }
-                finish();
+            } else {
+                // User does NOT exist in Firestore - Sign them out!
+                firebaseAuth.signOut();
+                googleSignInClient.signOut(); // Also sign out from Google if logged in with Google
+                emailLoginTxt.setError("User not found!");
+//                Toast.makeText(LoginScreen.this, "User not found!", Toast.LENGTH_SHORT).show();
             }
-        }).addOnFailureListener(e ->
-                Toast.makeText(LoginScreen.this, "Error fetching user data: " + e.getMessage(), Toast.LENGTH_SHORT).show()
-        );
+        }).addOnFailureListener(e -> {
+            firebaseAuth.signOut();
+            googleSignInClient.signOut();
+            Toast.makeText(LoginScreen.this, "Database error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
 
-
-    private void signupUser(){
+    private void signupUser() {
         startActivity(new Intent(LoginScreen.this, SignupScreen.class));
         finish();
     }

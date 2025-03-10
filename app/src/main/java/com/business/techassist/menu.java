@@ -1,12 +1,10 @@
 package com.business.techassist;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -21,18 +19,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.business.techassist.UserCredentials.LoginScreen;
+import com.business.techassist.menucomponents.messages.menu_message;
+import com.business.techassist.menucomponents.messages.messagesMenu;
 import com.business.techassist.menucomponents.profileMenu;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,14 +37,14 @@ public class menu extends Fragment {
 
     RelativeLayout logoutProfileBtn,
             settingsProfileBtn,
-            supportProfileBtn;
-
-    TextView nameUser, emailUser, PP_Btn, TOS_Btn;
-    ImageView userPicture,
+            supportProfileBtn,
             profileMenuBtn,
             cartMenuBtn,
             trackOrderMenuBtn,
             messageMenuBtn;
+
+    TextView nameUser, emailUser, PP_Btn, TOS_Btn;
+    ImageView userPicture;
     String currentUserId = "";
 
     // TODO: Rename parameter arguments, choose names that match
@@ -100,8 +94,15 @@ public class menu extends Fragment {
 
         loadComponents(view);
 
+        messageMenuBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), menu_message.class));
+            }
+        });
+
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         if (firebaseUser != null) {
             currentUserId = firebaseUser.getUid();
         }
@@ -114,61 +115,39 @@ public class menu extends Fragment {
         });
 
         if(firebaseUser != null){
-            String userID = firebaseUser.getUid();
 
-            String name = firebaseUser.getDisplayName();  // Google Display Name
-            String email = firebaseUser.getEmail();       // Google Email
+            String googleName = firebaseUser.getDisplayName(); // Google Name
+            String email = firebaseUser.getEmail();           // Google Email
 
-            // Set Name and Email
-            if (name != null) {
-                String firstName = name.split(" ")[0]; // Get first name only
-                nameUser.setText(firstName);
+            if (googleName != null && !googleName.isEmpty()) {
+                String[] nameParts = googleName.trim().split("\\s+");
+                nameUser.setText(nameParts[0]); // First name only
             } else {
-                nameUser.setText("User");
+                nameUser.setText("User"); // if Google name is missing
             }
 
-            if (email != null) {
-                emailUser.setText(email);
-            } else {
-                emailUser.setText("Email not found");
-            }
+            emailUser.setText(email != null ? email : "Email not found");
 
-//            Glide.with(this)
-//                    .load(R.drawable.user_icon)
-//                    .placeholder(R.drawable.user_icon) // Use a default drawable
-//                    .error(R.drawable.user_icon) // If loading fails
-//                    .into(userPicture);
 
-            databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()) {
-                        String dbName = snapshot.child("Name").getValue(String.class);
-                        String dbEmail = snapshot.child("Email").getValue(String.class);
+            firestore.collection("Users").document(currentUserId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String dbName = documentSnapshot.getString("Name");
+                            String dbEmail = documentSnapshot.getString("Email");
 
-                        if (dbName != null && !dbName.isEmpty()) {
-                            nameUser.setText(dbName);
-                        } else {
-                            nameUser.setText("No name found");
+                            if (dbName != null && !dbName.isEmpty()) {
+                                String[] nameParts = dbName.trim().split("\\s+");
+                                nameUser.setText(nameParts[0]);
+                            }
+
+                            if (dbEmail != null && !dbEmail.isEmpty()) {
+                                emailUser.setText(dbEmail);
+                            }
                         }
-
-                        if (dbEmail != null && !dbEmail.isEmpty()) {
-                            emailUser.setText(dbEmail);
-                        } else {
-                            emailUser.setText("Email not found");
-                        }
-
-                        nameUser.invalidate();
-                        nameUser.requestLayout();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getContext(), "Database Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }else{
             nameUser.setText("Guest");
             emailUser.setText("Not logged in");
@@ -180,52 +159,51 @@ public class menu extends Fragment {
 
         logoutProfileBtn.setOnClickListener(view13 -> {
             GoogleSignIn.getClient(requireActivity(), new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build())
-                    .signOut()
+                    .revokeAccess()  // Completely disconnects Google Sign-In
                     .addOnCompleteListener(task -> {
                         FirebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(getActivity(), LoginScreen.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Ensures a fresh start
                         startActivity(intent);
-                        if (getActivity() != null) {
-                            getActivity().finish();
-                        }
+                        requireActivity().finish();
                     });
-
         });
+
 
         // Inflate the layout for this fragment
         return view;
     }
 
     private void loadProfileImage() {
-        DatabaseReference userRef = FirebaseDatabase.getInstance()
-                .getReference("Users")
-                .child(currentUserId)
-                .child("profileImageUrl");
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String imageUrl = snapshot.getValue(String.class);
-                    if (imageUrl != null && !imageUrl.isEmpty() && isAdded()) {
-                        Glide.with(requireActivity())
-                                .load(imageUrl)
-                                .into(userPicture);
+        if (currentUserId == null || currentUserId.isEmpty()) {
+            loadDefaultImage();
+            return;
+        }
+
+        firestore.collection("Users").document(currentUserId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String imageUrl = documentSnapshot.getString("ProfilePic");
+                        if (imageUrl != null && !imageUrl.isEmpty() && isAdded()) {
+                            Glide.with(requireActivity())
+                                    .load(imageUrl)
+                                    .into(userPicture);
+                        } else {
+                            loadDefaultImage();
+                        }
                     } else {
                         loadDefaultImage();
                     }
-                } else {
+                })
+                .addOnFailureListener(e -> {
                     loadDefaultImage();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle error if needed
-            }
-        });
-
+                    Toast.makeText(getContext(), "Failed to load profile image", Toast.LENGTH_SHORT).show();
+                });
     }
+
 
     private void loadDefaultImage() {
         if (isAdded()) {

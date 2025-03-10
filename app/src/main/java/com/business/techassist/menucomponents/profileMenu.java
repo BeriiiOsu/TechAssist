@@ -30,6 +30,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -45,7 +49,8 @@ public class profileMenu extends AppCompatActivity {
     private Uri imageUri;
     private String currentUserId = "sampleUserId";
     TextView removePhotoBtn;
-    DatabaseReference userRef;
+    FirebaseFirestore db;
+    DocumentReference userRef;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +88,9 @@ public class profileMenu extends AppCompatActivity {
         }
 
         // Set up Firebase database reference
-        userRef = FirebaseDatabase.getInstance().getReference("Users").child(currentUserId);
+        db = FirebaseFirestore.getInstance();
+        userRef = db.collection("Users").document(currentUserId);
+
 
         // Load user profile data
         loadProfileData();
@@ -144,38 +151,32 @@ public class profileMenu extends AppCompatActivity {
 
     // Load Profile Data from Firebase
     private void loadProfileData() {
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    nameProfileTxt.setText(snapshot.child("Name").getValue(String.class));
-                    emailProfileTxt.setText(snapshot.child("Email").getValue(String.class));
-                    streetAddressProfileTxt.setText(snapshot.child("streetAddress").getValue(String.class));
-                    cityProfileTxt.setText(snapshot.child("city").getValue(String.class));
-                    provinceProfileTxt.setText(snapshot.child("province").getValue(String.class));
-                    postalProfileTxt.setText(snapshot.child("postalCode").getValue(String.class));
-                    dropdownTextView.setText(snapshot.child("country").getValue(String.class), false);
+        userRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                nameProfileTxt.setText(documentSnapshot.getString("Name"));
+                emailProfileTxt.setText(documentSnapshot.getString("Email"));
+                streetAddressProfileTxt.setText(documentSnapshot.getString("streetAddress"));
+                cityProfileTxt.setText(documentSnapshot.getString("city"));
+                provinceProfileTxt.setText(documentSnapshot.getString("province"));
+                postalProfileTxt.setText(documentSnapshot.getString("postalCode"));
+                dropdownTextView.setText(documentSnapshot.getString("country"), false);
 
-                    // Load profile image
-                    if (snapshot.exists()) {
-                        String imageUrl = snapshot.child("profileImageUrl").getValue(String.class);
-                        if (imageUrl != null && !imageUrl.isEmpty()) {
-                            Glide.with(profileMenu.this).load(imageUrl).into(profilePicture);
-                            removePhotoBtn.setVisibility(View.VISIBLE);
-                        } else {
-                            profilePicture.setImageResource(R.drawable.user_icon);
-                            removePhotoBtn.setVisibility(View.GONE);
-                        }
-                    }
+                // Load profile image
+                String imageUrl = documentSnapshot.getString("ProfilePic");
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(profileMenu.this).load(imageUrl).into(profilePicture);
+                    removePhotoBtn.setVisibility(View.VISIBLE);
+                    removePhotoBtn.setEnabled(true);
+                } else {
+                    profilePicture.setImageResource(R.drawable.user_icon);
+                    removePhotoBtn.setVisibility(View.GONE);
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(profileMenu.this, "Failed to load profile data!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }).addOnFailureListener(e ->
+                Toast.makeText(profileMenu.this, "Failed to load profile data!", Toast.LENGTH_SHORT).show()
+        );
     }
+
 
     // Save Profile Data to Firebase
     private void saveProfileData() {
@@ -187,7 +188,7 @@ public class profileMenu extends AppCompatActivity {
         String postalCode = postalProfileTxt.getText().toString().trim();
         String country = dropdownTextView.getText().toString().trim();
 
-        // 🔹 Save data using HashMap
+        // Save data using HashMap
         Map<String, Object> userData = new HashMap<>();
         userData.put("Name", name.isEmpty() ? "N/A" : name);
         userData.put("Email", email.isEmpty() ? "N/A" : email);
@@ -200,7 +201,7 @@ public class profileMenu extends AppCompatActivity {
         if (imageUri != null) {
             uploadImageToFirebase(userData);
         } else {
-            userRef.updateChildren(userData)
+            userRef.set(userData, SetOptions.merge())
                     .addOnSuccessListener(aVoid ->
                             Toast.makeText(profileMenu.this, "Profile updated!", Toast.LENGTH_SHORT).show()
                     )
@@ -219,43 +220,60 @@ public class profileMenu extends AppCompatActivity {
         }
 
         StorageReference fileRef = FirebaseStorage.getInstance().getReference()
-                .child("profile_images/" + currentUserId);
+                .child("profile_images/" + currentUserId + ".jpg");
 
         fileRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> fileRef.getDownloadUrl().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         String downloadUrl = task.getResult().toString();
-                        userData.put("profileImageUrl", downloadUrl);
-                        userRef.updateChildren(userData)
+                        userData.put("ProfilePic", downloadUrl);
+
+                        userRef.set(userData, SetOptions.merge())
                                 .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(profileMenu.this, "Profile updated!", Toast.LENGTH_SHORT).show();
                                     Glide.with(profileMenu.this).load(downloadUrl).into(profilePicture);
-                                    removePhotoBtn.setVisibility(View.VISIBLE);  // Show remove button after successful upload
+                                    removePhotoBtn.setVisibility(View.VISIBLE);
+                                    removePhotoBtn.setEnabled(true);
+                                    Toast.makeText(profileMenu.this, "Profile updated!", Toast.LENGTH_SHORT).show();
                                     finish();
                                 })
-                                .addOnFailureListener(e -> Toast.makeText(profileMenu.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                .addOnFailureListener(e ->
+                                        Toast.makeText(profileMenu.this, "Update failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                                );
                     } else {
                         Toast.makeText(profileMenu.this, "Failed to get image URL!", Toast.LENGTH_SHORT).show();
                     }
                 }))
-                .addOnFailureListener(e -> Toast.makeText(profileMenu.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(profileMenu.this, "Upload failed: " + e.getMessage(), Toast.LENGTH_SHORT).show()
+                );
     }
 
+
+
     private void removeProfileImage() {
-        final StorageReference fileRef = FirebaseStorage.getInstance()
-                .getReference("profile_images")
-                .child(currentUserId);
+        StorageReference fileRef = FirebaseStorage.getInstance()
+                .getReference()
+                .child("profile_images/" + currentUserId + ".jpg");
 
         fileRef.delete().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                userRef.child("profileImageUrl").removeValue();
-                profilePicture.setImageResource(R.drawable.user_icon);
-                removePhotoBtn.setVisibility(View.GONE);  // Hide button after removing image
-                Toast.makeText(profileMenu.this, "Profile image removed", Toast.LENGTH_SHORT).show();
+                // Remove image URL from Firestore
+                userRef.update("ProfilePic", FieldValue.delete())
+                        .addOnSuccessListener(aVoid -> {
+                            profilePicture.setImageResource(R.drawable.user_icon);
+                            removePhotoBtn.setVisibility(View.GONE);
+                            removePhotoBtn.setEnabled(false);
+                            Toast.makeText(profileMenu.this, "Profile image removed", Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e ->
+                                Toast.makeText(profileMenu.this, "Failed to remove image URL!", Toast.LENGTH_SHORT).show()
+                        );
             } else {
                 Toast.makeText(profileMenu.this, "No image found or failed to remove!", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 
 }
