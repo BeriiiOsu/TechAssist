@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.business.techassist.Database.FirebaseUtil;
+import com.business.techassist.utilities.FirebaseUtil;
 import com.business.techassist.R;
 import com.business.techassist.models.ChatMessageModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

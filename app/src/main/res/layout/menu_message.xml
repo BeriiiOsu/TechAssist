@@ -19,18 +19,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/tech_assist_logo" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text="Messages"
+            android:layout_marginStart="15dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="20sp"
             tools:ignore="HardcodedText" />
 
         <!-- Search View -->
@@ -42,14 +38,23 @@
             android:layout_weight="1">
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/icon_search"
                 android:id="@+id/searchBtn"
-                android:layout_alignParentRight="true"/>
+                android:layout_alignParentEnd="true"/>
 
         </RelativeLayout>
 
     </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/relativeLayout2"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/recyler_view"/>
+
 
 </RelativeLayout>

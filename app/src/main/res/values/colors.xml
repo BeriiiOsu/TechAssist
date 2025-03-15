@@ -13,4 +13,20 @@
     <color name="chat_color_sender">#1E88E5</color>
     <color name="chat_color_receiver">#7CB342</color>
 
+    <color name="red">#FF0000</color>
+    <color name="darkGrey">#616161</color>
+
+    <color name="blue">#1AB3C5</color>
+    <color name="lightBlue">#F0F3FA</color>
+    <color name="skyBlue">#5996EF</color>
+    <color name="lightBlueBtn">#ECF9FF</color>
+    <color name="BlueBtn">#1499D0</color>
+    <color name="lightOrangeBtn">#FFF7ED</color>
+    <color name="OrangeBtn">#DD743C</color>
+    <color name="lightPurpleBtn">#EDEEFF</color>
+    <color name="PurpleBtn">#6735A4</color>
+    <color name="blueCat">#1E73C5</color>
+    <color name="brown">#F0D9C1</color>
+    <color name="lightGrey">#ECEDEF</color>
+
 </resources>

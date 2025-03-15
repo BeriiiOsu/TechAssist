@@ -2,7 +2,6 @@ package com.business.techassist.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.business.techassist.Database.FirebaseUtil;
+import com.business.techassist.utilities.FirebaseUtil;
 import com.business.techassist.R;
-import com.business.techassist.UserCredentials.AdminModel;
+import com.business.techassist.models.AdminModel;
 import com.business.techassist.menucomponents.messages.messageActivity;
 import com.business.techassist.utilities.AndroidUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -33,7 +32,7 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<AdminMod
 
     @Override
     protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull AdminModel model) {
-        if (position == RecyclerView.NO_POSITION) return; // ✅ Avoid invalid positions
+        if (position == RecyclerView.NO_POSITION) return;
 
         try {
             holder.emailRow.setText(model.getEmail());
@@ -44,7 +43,6 @@ public class SearchUserRecyclerAdapter extends FirestoreRecyclerAdapter<AdminMod
             }
 
             holder.itemView.setOnClickListener(view -> {
-                Log.d("RecyclerClick", "User clicked: " + model.getName());
                 Intent intent = new Intent(context, messageActivity.class);
                 AndroidUtil.passAdminDataMessages(intent, model);
                 context.startActivity(intent);

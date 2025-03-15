@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+
     <item
         android:id="@+id/homeBtn"
         android:title="Home"
@@ -12,8 +14,13 @@
         android:icon="@drawable/cart"
         tools:ignore="HardcodedText" />
     <item
-        android:id="@+id/menuBtn"
-        android:title="Menu"
-        android:icon="@drawable/menu_icon"
+        android:id="@+id/activityBtn"
+        android:title="Activities"
+        android:icon="@drawable/activity_icon"
+        tools:ignore="HardcodedText" />
+    <item
+        android:id="@+id/chatbotBtn"
+        android:title="Chatbot"
+        android:icon="@drawable/chatbot_icon"
         tools:ignore="HardcodedText" />
 </menu>

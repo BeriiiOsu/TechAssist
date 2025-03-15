@@ -7,8 +7,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,18 +14,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.business.techassist.Database.FirebaseUtil;
+import com.business.techassist.utilities.FirebaseUtil;
 import com.business.techassist.R;
-import com.business.techassist.UserCredentials.AdminModel;
+import com.business.techassist.models.AdminModel;
 import com.business.techassist.adapters.ChatRecyclerAdapter;
 import com.business.techassist.models.ChatMessageModel;
 import com.business.techassist.models.ChatroomModel;
 import com.business.techassist.utilities.AndroidUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 
 import java.util.Arrays;
@@ -126,7 +121,6 @@ public class messageActivity extends AppCompatActivity {
     }
 
 
-
     private void sendMessageAdmin(String message) {
         chat_message_input.setText("");
 
@@ -135,11 +129,33 @@ public class messageActivity extends AppCompatActivity {
                 message, FirebaseUtil.currentUserID(), Timestamp.now()
         );
 
-        // Send the message first
+        // Check if chatroomModel exists, else create it
+        if (chatroomModel == null) {
+            chatroomModel = new ChatroomModel(
+                    chatroomID,
+                    Arrays.asList(FirebaseUtil.currentUserID(), otherAdmin.getUserID()),
+                    Timestamp.now(),
+                    message
+            );
+
+            // Create chatroom and then send the message
+            FirebaseUtil.getChatroomID(chatroomID).set(chatroomModel)
+                    .addOnSuccessListener(aVoid -> sendChatMessage(chatMessageModel))
+                    .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),
+                            "Failed to create chatroom.", Toast.LENGTH_SHORT).show());
+        } else {
+            // Chatroom already exists, send message directly
+            sendChatMessage(chatMessageModel);
+        }
+    }
+
+    private void sendChatMessage(ChatMessageModel chatMessageModel) {
         FirebaseUtil.getChatroomMessage(chatroomID).add(chatMessageModel)
                 .addOnSuccessListener(documentReference -> {
+                    // Update chatroom with last message
                     chatroomModel.setLastMessageTimestamp(Timestamp.now());
                     chatroomModel.setLastMessageSenderID(FirebaseUtil.currentUserID());
+                    chatroomModel.setLastMessage(chatMessageModel.getMessage());
                     FirebaseUtil.getChatroomID(chatroomID).set(chatroomModel);
                 })
                 .addOnFailureListener(e -> {
@@ -150,22 +166,31 @@ public class messageActivity extends AppCompatActivity {
 
 
     private void getOrCreateChatroomModel() {
-        FirebaseUtil.getChatroomID(chatroomID).get().addOnCompleteListener(v ->{
-            if(v.isSuccessful()){
+        FirebaseUtil.getChatroomID(chatroomID).get().addOnCompleteListener(v -> {
+            if (v.isSuccessful() && v.getResult() != null && v.getResult().exists()) {
                 chatroomModel = v.getResult().toObject(ChatroomModel.class);
-                if(chatroomModel == null){
-                    //first conversation
-                    chatroomModel = new ChatroomModel(
-                            chatroomID,
-                            Arrays.asList(FirebaseUtil.currentUserID(), otherAdmin.getUserID()),
-                            Timestamp.now(),
-                            ""
-                    );
-                    FirebaseUtil.getChatroomID(chatroomID).set(chatroomModel);
-                }
             }
         });
     }
+
+//    private void getOrCreateChatroomModel() {
+//        FirebaseUtil.getChatroomID(chatroomID).get().addOnCompleteListener(v ->{
+//            if(v.isSuccessful()){
+//                chatroomModel = v.getResult().toObject(ChatroomModel.class);
+//                if(chatroomModel == null){
+//                    //first conversation
+//                    chatroomModel = new ChatroomModel(
+//                            chatroomID,
+//                            Arrays.asList(FirebaseUtil.currentUserID(), otherAdmin.getUserID()),
+//                            Timestamp.now(),
+//                            ""
+//                    );
+//                    FirebaseUtil.getChatroomID(chatroomID).set(chatroomModel);
+//                }
+//            }
+//        });
+//    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -181,6 +206,12 @@ public class messageActivity extends AppCompatActivity {
             chatRecyclerAdapter.notifyDataSetChanged();
             chatRecyclerAdapter.startListening();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (chatRecyclerAdapter != null) chatRecyclerAdapter.stopListening();
     }
 
     @Override

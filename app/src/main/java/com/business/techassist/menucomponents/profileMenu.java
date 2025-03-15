@@ -1,5 +1,6 @@
 package com.business.techassist.menucomponents;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,7 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -21,15 +23,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.business.techassist.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.business.techassist.utilities.AndroidUtil;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,6 +36,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 public class profileMenu extends AppCompatActivity {
     AutoCompleteTextView dropdownTextView;
@@ -52,6 +52,9 @@ public class profileMenu extends AppCompatActivity {
     FirebaseFirestore db;
     DocumentReference userRef;;
 
+    ActivityResultLauncher<Intent> imagePickLauncher;
+    Uri selectedImageUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,18 @@ public class profileMenu extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result ->{
+                if(result.getResultCode() == Activity.RESULT_OK){
+                    Intent data = new Intent();
+                    if(data != null && data.getData() != null){
+                        selectedImageUri = data.getData();
+                        AndroidUtil.setProfilePic(getApplicationContext(), selectedImageUri, profilePicture);
+                    }
+                }
+            }
+        );
 
         // Initialize UI elements
         uploadPhotoProfileBtn = findViewById(R.id.uploadPhotoProfileBtn);
@@ -96,7 +111,16 @@ public class profileMenu extends AppCompatActivity {
         loadProfileData();
 
         // Click listeners
-        uploadPhotoProfileBtn.setOnClickListener(v -> openImageChooser());
+        uploadPhotoProfileBtn.setOnClickListener(v -> {
+            ImagePicker.with(this).cropSquare().compress(512).maxResultSize(512, 512)
+                    .createIntent(new Function1<Intent, Unit>() {
+                        @Override
+                        public Unit invoke(Intent intent) {
+                            imagePickLauncher.launch(intent);
+                            return null;
+                        }
+                    });
+        });
         removePhotoBtn.setOnClickListener(v -> removeProfileImage());
         saveProfileBtn.setOnClickListener(v -> {
             saveProfileData();

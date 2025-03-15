@@ -97,5 +97,8 @@
         ]]>
     </string>
     <string name="client_id">1044964394656-e9pquf631ut1uvk6n11qpn7migse4kht.apps.googleusercontent.com</string>
+    <string name="default_web_client_id" translatable="false">1044964394656-e9pquf631ut1uvk6n11qpn7migse4kht.apps.googleusercontent.com</string>
+    <string name="title_activity_chat_assist">ChatAssist</string>
+
 
 </resources>
