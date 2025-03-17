@@ -29,4 +29,14 @@
     <color name="brown">#F0D9C1</color>
     <color name="lightGrey">#ECEDEF</color>
 
+    <color name="cream">#EFDEC9</color>
+    <color name="lightCream">#FCF0E2</color>
+
+    <color name="default_navbar">#FFFFFF</color>
+    <color name="gemini_dark_background">#202124</color>
+    <color name="white_text_color">#FFFFFF</color>
+    <color name="black_icon_color">#000000</color>
+    <color name="gemini_accent">#8AB4F8</color>
+
+
 </resources>

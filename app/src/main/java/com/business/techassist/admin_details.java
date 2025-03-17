@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -21,6 +22,7 @@ public class admin_details extends AppCompatActivity {
     ShapeableImageView img2;
     TextView nameTxt, specialTxt, experinceTxt, ratingTxt2;
     ImageView backBtnAdmin;
+    RelativeLayout chatAdminBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class admin_details extends AppCompatActivity {
             return insets;
         });
 
+        chatAdminBtn = findViewById(R.id.chatAdminBtn);
         img2 = findViewById(R.id.img2);
         nameTxt = findViewById(R.id.nameTxt);
         specialTxt = findViewById(R.id.specialTxt);

@@ -173,24 +173,6 @@ public class messageActivity extends AppCompatActivity {
         });
     }
 
-//    private void getOrCreateChatroomModel() {
-//        FirebaseUtil.getChatroomID(chatroomID).get().addOnCompleteListener(v ->{
-//            if(v.isSuccessful()){
-//                chatroomModel = v.getResult().toObject(ChatroomModel.class);
-//                if(chatroomModel == null){
-//                    //first conversation
-//                    chatroomModel = new ChatroomModel(
-//                            chatroomID,
-//                            Arrays.asList(FirebaseUtil.currentUserID(), otherAdmin.getUserID()),
-//                            Timestamp.now(),
-//                            ""
-//                    );
-//                    FirebaseUtil.getChatroomID(chatroomID).set(chatroomModel);
-//                }
-//            }
-//        });
-//    }
-
     @Override
     protected void onStart() {
         super.onStart();

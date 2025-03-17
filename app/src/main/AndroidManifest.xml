@@ -28,6 +28,9 @@
         android:theme="@style/Theme.TechAssist"
         tools:targetApi="31">
         <activity
+            android:name=".shopitems.ProductDetails"
+            android:exported="false" />
+        <activity
             android:name=".chatbot.ChatAssist"
             android:exported="false"
             android:label="@string/title_activity_chat_assist"
@@ -85,8 +88,6 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
-
     </application>
 
 </manifest>

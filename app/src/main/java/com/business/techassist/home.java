@@ -157,11 +157,11 @@ public class home extends Fragment {
 
                 // Insert data only if table is empty
                 if (dbHelper.getAllAdmins().isEmpty()) {
-                    insertAdmin(context, "Gary Aguilar", "5", "IT Generalist", 5, getBytesFromDrawable(R.drawable.admin_gary));
-                    insertAdmin(context, "Maai Brazas", "5", "Field Service Technician", 3, getBytesFromDrawable(R.drawable.admin_maai_2));
-                    insertAdmin(context, "Kyl Angelo", "5", "IT Support Specialist", 3, getBytesFromDrawable(R.drawable.admin_kyl));
-                    insertAdmin(context, "John Ian", "5", "Cybersecurity Specialist", 3, getBytesFromDrawable(R.drawable.admin_ian));
-                    insertAdmin(context, "Paul Dominic", "5", "Mobile Device Technician", 3, getBytesFromDrawable(R.drawable.admin_pauldominic));
+                    insertAdmin(context,"FfDfy5CmnpNkudflMhiwajZSY9D3" , "Gary Aguilar", "5", "IT Generalist", 5, getBytesFromDrawable(R.drawable.admin_gary));
+                    insertAdmin(context,"BtGNySpvJUOYkAtm5w4PfZsKVHw1" ,"Maai Brazas", "5", "Field Service Technician", 3, getBytesFromDrawable(R.drawable.admin_maai_2));
+                    insertAdmin(context,"e9KWX5aQWzbUhsSvuHPBnIxCLVR2" ,"Kyl Angelo", "5", "IT Support Specialist", 3, getBytesFromDrawable(R.drawable.admin_kyl));
+                    insertAdmin(context,"kUuUM24rOkg3r2m9b9ubbdKzCXg1" ,"John Ian", "5", "Cybersecurity Specialist", 3, getBytesFromDrawable(R.drawable.admin_ian));
+                    insertAdmin(context, "2dXoQiLEuWNlSvYLzQKvinbI15s1" ,"Paul Dominic", "5", "Mobile Device Technician", 3, getBytesFromDrawable(R.drawable.admin_pauldominic));
                 }
 
                 List<SQL_AdminModel> adminList = dbHelper.getAllAdmins();
@@ -186,11 +186,12 @@ public class home extends Fragment {
         return stream.toByteArray();
     }
 
-    public void insertAdmin(Context context, String name, String ratings, String specialized, int yearsExp, byte[] image) {
+    public void insertAdmin(Context context,String adminID, String name, String ratings, String specialized, int yearsExp, byte[] image) {
         AdminDatabase dbHelper = new AdminDatabase(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("adminID", adminID);
         values.put(AdminDatabase.COLUMN_NAME, name);
         values.put(AdminDatabase.COLUMN_RATINGS, ratings);
         values.put(AdminDatabase.COLUMN_SPECIALIZED, specialized);

@@ -58,12 +58,30 @@ class ChatViewModel : ViewModel() {
 
     private fun isValidQuestion(question: String): Boolean {
         val keywords = listOf(
-            // English keywords
-            "fix", "problem", "error", "issue", "troubleshoot", "repair", "device", "phone", "PC", "computer", "gadget",
-            "crash", "not working", "screen", "battery", "charging", "wifi", "bluetooth", "software", "hardware", "update", "restart", "shutdown", "slow", "lag", "malfunction", "connectivity", "reset", "factory reset", "virus", "app issue", "camera issue", "sound problem", "no signal", "network issue",
 
-            // Tagalog keywords
-            "ayos", "problema", "kamalian", "isyu", "pag-aayos", "pag-troubleshoot", "sira", "telepono", "kompyuter", "gadyet", "crash", "hindi gumagana", "screen", "baterya", "pagcha-charge", "wifi", "bluetooth", "software", "hardware", "update", "i-restart", "shutdown", "mabagal", "lag", "sirang bahagi", "konektibidad", "i-reset", "factory reset", "virus", "problema sa app", "problema sa camera", "problema sa tunog", "walang signal", "problema sa network"
+            "fix", "problem", "error", "issue", "troubleshoot", "repair", "device", "phone", "PC", "computer", "laptop",
+            "crash", "not working", "screen", "battery", "charging", "WiFi", "Bluetooth", "software", "hardware", "update",
+            "restart", "shutdown", "slow", "lag", "lags", "lagging", "malfunction", "connectivity", "reset", "factory reset",
+            "virus", "app issue", "camera issue", "sound problem", "no signal", "network issue", "black screen", "driver issue",
+            "blue screen", "BSOD", "disk error", "hard drive failure", "RAM issue", "CPU overheating", "GPU overheating",
+            "motherboard failure", "firmware update", "BIOS issue", "touchscreen not working", "charging port issue",
+            "power button not working", "overheating", "boot error", "keyboard not working", "mouse issue", "speaker problem",
+            "microphone issue", "fan not working", "thermal paste", "broken display", "USB issue", "Ethernet not working",
+            "HDMI not working", "mobile data not working", "SIM card issue", "phone overheating", "storage full", "system crash",
+            "battery drain", "battery replacement", "app crashing", "screen flickering", "phone freezing", "charging slowly",
+
+
+            "ayos", "problema", "kamalian", "isyu", "pag-aayos", "pag-troubleshoot", "sira", "telepono", "kompyuter", "laptop",
+            "crash", "hindi gumagana", "screen", "baterya", "pagcha-charge", "WiFi", "Bluetooth", "software", "hardware",
+            "update", "i-restart", "shutdown", "mabagal", "lag", "nagloko", "sirang bahagi", "konektibidad", "i-reset",
+            "factory reset", "virus", "problema sa app", "problema sa camera", "problema sa tunog", "walang signal",
+            "problema sa network", "itim ang screen", "problema sa driver", "blue screen", "BSOD", "disk error",
+            "hard drive sira", "RAM sira", "CPU sobrang init", "GPU sobrang init", "motherboard sira", "BIOS problema",
+            "firmware update", "touchscreen hindi gumagana", "sira ang charging port", "power button sira",
+            "sobrang init ng phone", "hindi gumagana ang mikropono", "hindi gumagana ang speaker", "problema sa USB",
+            "hindi gumagana ang Ethernet", "hindi gumagana ang HDMI", "hindi gumagana ang mobile data", "problema sa SIM card",
+            "storage puno", "sira ang sistema", "malakas ang battery drain", "kailangang palitan ang baterya",
+            "nagloko ang app", "nagla-lag ang screen", "nagyeyelo ang phone", "mabagal ang pagcha-charge"
         )
         return keywords.any { question.contains(it, ignoreCase = true) }
     }

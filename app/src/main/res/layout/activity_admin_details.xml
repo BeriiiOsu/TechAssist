@@ -110,6 +110,7 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
+                            android:id="@+id/chatAdminBtn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/light_purple_bg"

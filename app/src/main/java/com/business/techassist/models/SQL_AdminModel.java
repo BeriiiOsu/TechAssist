@@ -1,6 +1,7 @@
 package com.business.techassist.models;
 
 public class SQL_AdminModel {
+    String adminID;
     String ratings;
     String name;
     String specialized;
@@ -9,12 +10,21 @@ public class SQL_AdminModel {
 
 
 
-    public SQL_AdminModel(String name, String ratings, String specialized, int yearsExp, byte[] image) {
+    public SQL_AdminModel(String adminID, String name, String ratings, String specialized, int yearsExp, byte[] image) {
+        this.adminID = adminID;
         this.name = name;
         this.ratings = ratings;
         this.specialized = specialized;
         this.yearsExp = yearsExp;
         this.image = image;
+    }
+
+    public String getAdminID() {
+        return adminID;
+    }
+
+    public void setAdminID(String adminID) {
+        this.adminID = adminID;
     }
 
     public String getName() {

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class AdminDatabase extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "adminDB.db";
-    public static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
     public static final String TABLE_ADMIN = "admin";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
@@ -27,6 +27,7 @@ public class AdminDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_ADMIN + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "adminID TEXT," +
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_RATINGS + " TEXT, " +
                 COLUMN_SPECIALIZED + " TEXT, " +
@@ -49,13 +50,14 @@ public class AdminDatabase extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+                String adminID = cursor.getString(cursor.getColumnIndexOrThrow("adminID"));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NAME));
                 String ratings = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RATINGS));
                 String specialized = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_SPECIALIZED));
                 int yearsExp = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_YEARS_EXP));
                 byte[] image = cursor.getBlob(cursor.getColumnIndexOrThrow(COLUMN_IMAGE));
 
-                adminList.add(new SQL_AdminModel(name, ratings, specialized, yearsExp, image));
+                adminList.add(new SQL_AdminModel(adminID, name, ratings, specialized, yearsExp, image));
             } while (cursor.moveToNext());
         }
 

@@ -565,7 +565,7 @@
 
                 <RelativeLayout
                     android:layout_marginTop="5dp"
-                    android:background="@color/white"
+                    android:background="@color/cream"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     >

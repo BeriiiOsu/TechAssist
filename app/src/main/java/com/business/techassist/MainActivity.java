@@ -7,7 +7,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
-import com.business.techassist.chatbot.ChatAssistFragment; // Import the new Kotlin Fragment
+import com.business.techassist.chatbot.ChatAssistFragment;
 import com.business.techassist.utilities.FirebaseUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        applyDefaultTheme();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -53,12 +55,16 @@ public class MainActivity extends AppCompatActivity {
 
         if (item.getItemId() == R.id.homeBtn) {
             selectedFragment = new home();
+            applyDefaultTheme();
         } else if (item.getItemId() == R.id.shopBtn) {
             selectedFragment = new shop();
+            applyShopTheme();
         } else if (item.getItemId() == R.id.activityBtn) {
             selectedFragment = new activities();
+            applyDefaultTheme();
         } else if (item.getItemId() == R.id.chatbotBtn) {
             selectedFragment = new ChatAssistFragment();
+            applyGeminiTheme();
         }
 
         if (selectedFragment != null) {
@@ -68,4 +74,24 @@ public class MainActivity extends AppCompatActivity {
         }
         return true;
     }
+
+    private void applyDefaultTheme() {
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.default_navbar, getTheme()));
+        bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.default_text_color, getTheme()));
+        bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.bottom_nav_icon_color));
+    }
+
+    private void applyShopTheme() {
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.lightCream, getTheme()));
+        bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.light_cream_text, getTheme()));
+        bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.light_cream_icon, getTheme()));
+    }
+
+
+    private void applyGeminiTheme() {
+        bottomNavigationView.setBackgroundColor(getResources().getColor(R.color.gemini_dark_background, getTheme()));
+        bottomNavigationView.setItemTextColor(getResources().getColorStateList(R.color.white_text_color, getTheme()));
+        bottomNavigationView.setItemIconTintList(getResources().getColorStateList(R.color.bottom_nav_icon_gemini));
+    }
+
 }
