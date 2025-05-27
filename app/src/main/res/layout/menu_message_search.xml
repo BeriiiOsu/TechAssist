@@ -1,57 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/material_dynamic_neutral95"
     tools:context=".menucomponents.messages.messagesMenu">
 
-    <LinearLayout
-        android:id="@+id/relativeLayout2"
+    <!-- Modern App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:layout_marginStart="20dp"
-            android:id="@+id/backSearchBtn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/icon_back"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <!-- Search View -->
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/messagesSearchView"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="35dp"
-            android:layout_marginStart="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/search_bar_background"
-            android:queryHint="Search..."
-            style="@style/SearchViewStyle"
-            android:iconifiedByDefault="false"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            tools:ignore="HardcodedText" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/backSearchBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                app:icon="@drawable/icon_back"
+                app:iconTint="@color/white"
+                style="@style/Widget.Material3.Button.IconButton"
+                app:rippleColor="@color/white"/>
 
-    </LinearLayout>
+            <!-- Search View -->
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/messagesSearchView"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/search_bar_background"
+                android:queryHint="Search users..."
+                style="@style/SearchViewStyle"
+                android:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                app:iconifiedByDefault="false"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
+    <!-- Messages Recycler View -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messagesRecycler"
         android:layout_width="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="8dp"
         android:focusable="true"
         android:descendantFocusability="afterDescendants"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/relativeLayout2"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-</RelativeLayout>
+    <!-- Empty state view for search -->
+    <LinearLayout
+        android:id="@+id/emptySearchView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/icon_search"
+            android:alpha="0.5"
+            app:tint="@color/gray"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="No users found"
+            android:textColor="@color/text_secondary"
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Try a different search term"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <!-- Progress and status indicators -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ProgressBar
+            android:id="@+id/messagesProgressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:indeterminateTint="@color/primary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"/>
+
+        <TextView
+            android:id="@+id/messagesStatusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Checking access..."
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/messagesProgressBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

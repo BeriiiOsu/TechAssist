@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.business.techassist.R;
 
@@ -15,7 +16,7 @@ import java.io.ByteArrayOutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "products.db";
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 33;
 
     private static final String TABLE_PRODUCTS = "products";
     private static final String COLUMN_ID = "id";
@@ -77,6 +78,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return imageData;
     }
 
+    public String getProductImagePath(String productName) {
+        // Since we don't have actual image paths stored, we'll use the product name as an identifier
+        // In a real app, you might store the actual file path in the database
+        return productName;
+    }
 
     private byte[] getBytesFromDrawable(Context context, int drawableId) {
         Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), drawableId);
@@ -85,10 +91,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return new byte[0];
         }
 
-        Bitmap resizedBitmap = resizeImage(bitmap, 125, 150);
+        Bitmap resizedBitmap = resizeImage(bitmap, 325, 350);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        resizedBitmap.compress(Bitmap.CompressFormat.WEBP, 100, stream);
         return stream.toByteArray();
     }
 

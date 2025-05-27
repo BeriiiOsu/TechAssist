@@ -1,162 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:id="@+id/main"
+    android:background="@color/material_dynamic_neutral95"
     tools:context=".shopitems.ProductDetails">
 
-    <ScrollView
+    <!-- Improved AppBar with larger image area -->
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="350dp"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/transparent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorPrimaryContainer"
+            android:fitsSystemWindows="true">
+
+            <!-- Image gallery or main product image -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/imageGallery"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:visibility="gone"
+                app:layout_collapseMode="parallax"/>
+
+            <!-- Main product image with improved styling -->
+            <ImageView
+                android:id="@+id/detailsPicProduct"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:contentDescription="Product Image"
+                app:layout_collapseMode="parallax"/>
+
+            <!-- Modern back button with better positioning -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/backProductBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:layout_margin="16dp"
+                app:fabSize="mini"
+                android:contentDescription="Back"
+                app:layout_collapseMode="pin"
+                app:srcCompat="@drawable/icon_back"
+                app:tint="@color/white"
+                app:backgroundTint="@color/gray"/>
+
+            <!-- Toolbar to maintain proper collapse behavior -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Main content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:background="@color/grayLight"
+            android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:background="@color/lightGrey"
-                android:layout_height="450dp">
-
-                <ImageView
-                    android:id="@+id/detailsPicProduct"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:padding="48dp"
-                    android:scaleType="fitCenter"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-                <ImageView
-                    android:id="@+id/backProductBtn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="14dp"
-                    android:layout_marginTop="28dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/back" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/productName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="5dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:text="title" />
-
-            <TextView
-                android:id="@+id/stockDetails"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Stock: "
-                android:textColor="@color/gray"
-                android:layout_marginHorizontal="16dp" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Options"
-                android:textColor="@color/black"
-                android:layout_margin="16dp"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerColor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="0.5" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerSize"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="0.5" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView10"
+            <!-- Product Header Card - Main info with improved styling -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="Product Detail"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/descriptionTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="description"
-                android:textColor="@color/darkGrey"
-                android:textSize="16sp"
-                android:layout_margin="16dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/stroke_bg"
-                    android:orientation="horizontal">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="20dp">
 
+                    <!-- Product name with improved typography -->
+                    <TextView
+                        android:id="@+id/productName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Product Name"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+
+                    <!-- Price with improved styling -->
                     <TextView
                         android:id="@+id/priceTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0"
-                        android:textColor="@color/OrangeBtn"
+                        android:layout_marginTop="8dp"
+                        android:text="₱120.00"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"/>
+
+                    <!-- Stock info and rating in a single row -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <!-- Stock chip with improved styling -->
+                        <TextView
+                            android:id="@+id/stockDetails"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/pill_bg"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="5dp"
+                            android:text="In Stock: 256"
+                            android:textSize="12sp"
+                            android:textColor="@color/white"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Product Description Card with improved styling -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="20dp">
+
+                    <!-- Section title -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Product Description"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_marginHorizontal="16dp"
-                        />
-                </LinearLayout>
+                        android:textColor="@color/black"/>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:background="@drawable/orange_bg"
-                    style="@android:style/Widget.Button"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:id="@+id/addToCartBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <!-- Product description with improved styling -->
+                    <TextView
+                        android:id="@+id/descriptionTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Product description goes here with all the important details about this specific product."
+                        android:textSize="14sp"
+                        android:lineSpacingExtra="4dp"
+                        android:textColor="@color/gray"/>
+
+                    <!-- Key features section -->
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="16dp"-->
+<!--                        android:text="Key Features"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textColor="@color/black"/>-->
+
+<!--                    &lt;!&ndash; Feature list &ndash;&gt;-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="vertical"-->
+<!--                        android:layout_marginTop="8dp">-->
+
+<!--                        &lt;!&ndash; Feature 1 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:layout_marginBottom="6dp">-->
+<!--                            -->
+<!--                            <ImageView-->
+<!--                                android:layout_width="16dp"-->
+<!--                                android:layout_height="16dp"-->
+<!--                                android:layout_marginTop="2dp"-->
+<!--                                android:src="@drawable/ic_shopping_bag"-->
+<!--                                app:tint="@color/primary"/>-->
+<!--                                -->
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="8dp"-->
+<!--                                android:text="High-quality materials for durability"-->
+<!--                                android:textColor="@color/gray"/>-->
+<!--                        </LinearLayout>-->
+
+<!--                        &lt;!&ndash; Feature 2 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:layout_marginBottom="6dp">-->
+<!--                            -->
+<!--                            <ImageView-->
+<!--                                android:layout_width="16dp"-->
+<!--                                android:layout_height="16dp"-->
+<!--                                android:layout_marginTop="2dp"-->
+<!--                                android:src="@drawable/ic_shopping_bag"-->
+<!--                                app:tint="@color/primary"/>-->
+<!--                                -->
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="8dp"-->
+<!--                                android:text="Energy-efficient design"-->
+<!--                                android:textColor="@color/gray"/>-->
+<!--                        </LinearLayout>-->
+
+<!--                        &lt;!&ndash; Feature 3 &ndash;&gt;-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal">-->
+<!--                            -->
+<!--                            <ImageView-->
+<!--                                android:layout_width="16dp"-->
+<!--                                android:layout_height="16dp"-->
+<!--                                android:layout_marginTop="2dp"-->
+<!--                                android:src="@drawable/ic_shopping_bag"-->
+<!--                                app:tint="@color/primary"/>-->
+<!--                                -->
+<!--                            <TextView-->
+<!--                                android:layout_width="match_parent"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="8dp"-->
+<!--                                android:text="12-month warranty included"-->
+<!--                                android:textColor="@color/gray"/>-->
+<!--                        </LinearLayout>-->
+<!--                    </LinearLayout>-->
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Add to Cart Button with Quantity Selector -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="24dp">
+
+                <!-- Quantity Selector -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="120dp"
+                    android:layout_height="60dp"
+                    android:layout_marginEnd="12dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <!-- Decrease Button -->
+                        <ImageButton
+                            android:id="@+id/decreaseBtn"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_minus"
+                            android:contentDescription="Decrease quantity"
+                            app:tint="@color/primary" />
+
+                        <!-- Quantity Display -->
+                        <TextView
+                            android:id="@+id/quantityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:layout_marginHorizontal="8dp" />
+
+                        <!-- Increase Button -->
+                        <ImageButton
+                            android:id="@+id/increaseBtn"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_plus"
+                            android:contentDescription="Increase quantity"
+                            app:tint="@color/primary" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Button Container -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
                     android:layout_weight="1"
-                    android:text="Add to Cart"
-                    android:drawableTint="@color/white"
-                    android:textSize="20dp"
-                    android:paddingStart="16dp"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginEnd="16dp"/>
+                    android:orientation="horizontal">
+
+                    <!-- Add to Cart Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/addToCartBtn"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="Add to Cart"
+                        android:textSize="12sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        app:icon="@drawable/cart_new_icon"
+                        app:iconGravity="textStart"
+                        app:iconPadding="4dp"
+                        app:iconSize="16dp"
+                        app:cornerRadius="12dp"
+                        app:strokeColor="@color/primary"
+                        app:iconTint="@color/primary"/>
+
+                    <!-- Buy Now Button -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buyNowBtn"
+                        style="@style/Widget.Material3.Button"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="Buy Now"
+                        android:textSize="12sp"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        app:cornerRadius="12dp"
+                        app:iconTint="@color/white"/>
+                </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

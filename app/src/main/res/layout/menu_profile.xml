@@ -1,345 +1,387 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/profile_root_layout"
     android:layout_width="match_parent"
-    android:background="@color/white"
     android:layout_height="match_parent"
+    android:background="@color/material_dynamic_neutral95"
     android:fitsSystemWindows="true"
-
     tools:context=".menucomponents.profileMenu">
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary"
+        android:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-black"
             android:text="Personal Information"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginStart="15dp"
-            tools:ignore="HardcodedText"
-            android:layout_centerVertical="true"/>
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/white"/>
 
-    </RelativeLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/relativeLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingBottom="55dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        android:focusable="true"
         android:focusableInTouchMode="true"
-        android:descendantFocusability="beforeDescendants">
+        android:focusable="true"
+        android:descendantFocusability="beforeDescendants"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-        <LinearLayout
-            android:background="@drawable/box_btn"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:paddingStart="10dp"
-            android:paddingBottom="20dp"
-            android:paddingEnd="10dp">
+            android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Photo"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp"
-                android:textColor="@color/black"
-                android:fontFamily="sans-serif-black"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText" />
-
-            <LinearLayout
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
+            <!-- Profile Photo Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/profileCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp">
+                app:cardElevation="2dp"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_margin="8dp"
+                app:strokeWidth="0dp">
 
-                <ImageView
-                    android:id="@+id/profilePicture"
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:src="@drawable/null_picture"
-                    tools:ignore="ContentDescription,ImageContrastCheck" />
-
-                <RelativeLayout
-                    android:id="@+id/uploadPhotoProfileBtn"
-                    android:layout_width="80dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/box_btn"
-                    tools:ignore="TextSizeCheck">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Upload photo"
-                        android:textColor="@color/black"
-                        android:textSize="10sp"
-                        tools:ignore="HardcodedText,SmallSp" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/removePhotoBtn"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="sans-serif-black"
-                    android:text="Remove photo"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="10sp"
-                    tools:ignore="HardcodedText,SmallSp" />
-                
-            </LinearLayout>
+                    android:background="@color/white"
+                    android:padding="24dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                app:boxBackgroundMode="outline"
-                android:hint="Name"
-                android:textColorHint="@color/black"
-                app:boxStrokeWidth="2dp"
-                android:layout_marginEnd="25dp"
-                tools:ignore="HardcodedText">
+                    <!-- Profile Photo Section -->
+                    <TextView
+                        android:id="@+id/photoLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Profile Photo"
+                        android:textColor="@color/primary"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                <EditText
-                    android:id="@+id/nameProfileTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:autofillHints="emailAddress"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    tools:ignore="LabelFor,TextContrastCheck" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/profilePicture"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/null_picture"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/photoLabel"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Circle"
+                        app:strokeColor="@color/primary"
+                        app:strokeWidth="1dp"/>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/uploadPhotoProfileBtn"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:minWidth="120dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Upload"
+                        android:textColor="@color/primary"
+                        app:icon="@android:drawable/ic_menu_upload"
+                        app:iconTint="@color/primary"
+                        app:layout_constraintStart_toEndOf="@id/profilePicture"
+                        app:layout_constraintTop_toTopOf="@id/profilePicture"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                style="@style/defaultTextBox"
-                app:boxBackgroundMode="outline"
-                android:hint="Email"
-                android:textColorHint="@color/black"
-                app:boxStrokeWidth="2dp"
-                android:layout_marginEnd="25dp"
-                tools:ignore="HardcodedText">
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/removePhotoBtn"
+                        style="@style/Widget.Material3.Button.Text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:minWidth="120dp"
+                        android:text="Remove"
+                        android:textColor="@color/error"
+                        app:icon="@android:drawable/ic_menu_delete"
+                        app:iconTint="@color/error"
+                        app:layout_constraintStart_toStartOf="@id/uploadPhotoProfileBtn"
+                        app:layout_constraintTop_toBottomOf="@id/uploadPhotoProfileBtn"/>
 
-                <EditText
-                    android:id="@+id/emailProfileTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:autofillHints="emailAddress"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/black"
-                    tools:ignore="LabelFor,TextContrastCheck" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginEnd="25dp"
-                    app:boxBackgroundMode="outline"
-                    android:hint="Select a Country"
-
-                    android:textColorHint="@color/black"
-                    app:endIconTint="@color/black"
-                    app:endIconMode="dropdown_menu"
-                    tools:ignore="HardcodedText">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/dropdownTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawablePadding="8dp"
-                        android:paddingStart="16dp"
-                        android:paddingTop="10dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="10dp"
-                        android:textColor="@color/black"
-                        tools:ignore="LabelFor,SpeakableTextPresentCheck" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                style="@style/defaultTextBox"
-                app:boxBackgroundMode="outline"
-                android:hint="Street address"
-                android:textColorHint="@color/black"
-                app:boxStrokeWidth="2dp"
-                android:layout_marginEnd="25dp"
-                tools:ignore="HardcodedText">
-
-                <EditText
-                    android:id="@+id/streetAddressProfileTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                style="@style/defaultTextBox"
-                app:boxBackgroundMode="outline"
-                android:hint="City"
-                android:textColorHint="@color/black"
-                app:boxStrokeWidth="2dp"
-                android:layout_marginEnd="25dp"
-                tools:ignore="HardcodedText">
-
-                <EditText
-                    android:id="@+id/cityProfileTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                style="@style/defaultTextBox"
-                app:boxBackgroundMode="outline"
-                android:hint="State / Province"
-                android:textColorHint="@color/black"
-                app:boxStrokeWidth="2dp"
-                android:layout_marginEnd="25dp"
-                tools:ignore="HardcodedText">
-
-                <EditText
-                    android:id="@+id/provinceProfileTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="25dp"
-                style="@style/defaultTextBox"
-                app:boxBackgroundMode="outline"
-                android:hint="ZIP / Postal code"
-                android:textColorHint="@color/black"
-                app:boxStrokeWidth="2dp"
-                android:layout_marginEnd="25dp"
-                tools:ignore="HardcodedText">
-
-                <EditText
-                    android:id="@+id/postalProfileTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
+            <!-- Personal Info Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="25dp">
+                app:cardElevation="2dp"
+                app:cardCornerRadius="16dp"
+                android:layout_margin="8dp"
+                app:strokeWidth="0dp"
+                app:layout_constraintTop_toBottomOf="@id/profileCard">
 
-                <RelativeLayout
-                    android:id="@+id/saveProfileBtn"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/box_btn"
-                    tools:ignore="TextSizeCheck"
-                    android:paddingBottom="20dp">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Name Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/nameInput"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Save changes"
+                        android:hint="Full Name"
                         android:textColor="@color/black"
-                        android:textSize="10sp"
-                        tools:ignore="HardcodedText,SmallSp" />
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/primary"
+                        app:hintTextColor="@color/primary"
+                        app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </RelativeLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nameProfileTxt"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:nextFocusUp="@id/scrollView"
+                            android:nextFocusDown="@id/scrollView"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                <RelativeLayout
-                    android:id="@+id/cancelProfileBtn"
-                    android:paddingBottom="20dp"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="20dp"
-                    android:background="@drawable/box_black_btn"
-                    tools:ignore="TextSizeCheck">
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Email Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailInput"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="sans-serif-black"
-                        android:text="Discard"
-                        android:textColor="@color/white"
-                        android:textSize="10sp"
-                        tools:ignore="HardcodedText,SmallSp" />
+                        android:layout_marginTop="16dp"
+                        android:hint="Email Address"
+                        android:textColor="@color/black"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/primary"
+                        app:hintTextColor="@color/primary"
+                        app:startIconDrawable="@android:drawable/ic_dialog_email"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/nameInput">
 
-                </RelativeLayout>
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/emailProfileTxt"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+                    <!-- Country Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/countryInput"
+                        style="@style/ModernDropdownStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="16dp"
+                        android:hint="Country"
+                        app:startIconDrawable="@android:drawable/ic_menu_mapmode"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/emailInput">
 
-        </LinearLayout>
+                        <AutoCompleteTextView
+                            android:id="@+id/dropdownTextView"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:background="@color/white"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:cursorVisible="false"
+                            android:popupBackground="@color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- Address Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/addressInput"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="Street Address"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/primary"
+                        app:hintTextColor="@color/primary"
+                        app:startIconDrawable="@android:drawable/ic_menu_compass"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/countryInput">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/streetAddressProfileTxt"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:layout_height="wrap_content"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Province Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/provinceInput"
+                        style="@style/ModernDropdownStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="16dp"
+                        android:hint="State/Province"
+                        app:startIconDrawable="@android:drawable/ic_menu_mapmode"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/addressInput">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/provinceDropdown"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:background="@color/white"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:cursorVisible="false"
+                            android:popupBackground="@color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- City Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/cityInput"
+                        style="@style/ModernDropdownStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:hint="City"
+                        android:textColor="@color/black"
+                        app:startIconDrawable="@android:drawable/ic_menu_mapmode"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/provinceInput">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/cityDropdown"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:background="@color/white"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:cursorVisible="false"
+                            android:popupBackground="@color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Barangay Input (New) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/barangayInput"
+                        style="@style/ModernDropdownStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="16dp"
+                        android:hint="Barangay"
+                        app:startIconDrawable="@android:drawable/ic_menu_mapmode"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/cityInput">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/barangayDropdown"
+                            android:layout_width="match_parent"
+                            android:textColor="@color/black"
+                            android:background="@color/white"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:cursorVisible="false"
+                            android:popupBackground="@color/white"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Postal Code Input -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/postalInput"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="16dp"
+                        android:hint="ZIP/Postal Code"
+                        app:boxBackgroundColor="@color/white"
+                        app:boxStrokeColor="@color/primary"
+                        app:hintTextColor="@color/primary"
+                        app:startIconDrawable="@android:drawable/ic_dialog_map"
+                        app:startIconTint="@color/primary"
+                        app:layout_constraintTop_toBottomOf="@id/barangayInput">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/postalProfileTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:inputType="text"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:editable="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Action Buttons -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:weightSum="2"
+                        app:layout_constraintTop_toBottomOf="@id/postalInput">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/cancelProfileBtn"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="56dp"
+                            android:layout_marginEnd="8dp"
+                            android:text="Discard"
+                            android:textAlignment="center"
+                            android:textColor="@color/error"
+                            app:strokeColor="@color/error"
+                            app:icon="@android:drawable/ic_menu_close_clear_cancel"
+                            app:iconGravity="textStart"
+                            app:iconTint="@color/error"/>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/saveProfileBtn"
+                            style="@style/Widget.Material3.Button"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="56dp"
+                            android:layout_marginStart="8dp"
+                            android:textSize="11sp"
+                            android:text="Save Changes"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/primary"
+                            app:icon="@android:drawable/ic_menu_save"
+                            app:iconGravity="textStart"
+                            app:iconTint="@color/white"/>
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

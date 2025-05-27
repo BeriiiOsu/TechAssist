@@ -1,263 +1,366 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lightGrey"
+    android:background="@color/material_dynamic_neutral95"
     tools:context=".shop">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <!-- App Bar with Search -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:background="@color/white"
+            android:paddingVertical="12dp">
+
+            <!-- Search Bar -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/searchBarCard"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/white"
+                app:layout_constraintEnd_toStartOf="@id/cartShopBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/icon_search"
+                        app:tint="@color/gray" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Search products..."
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Cart Icon -->
+            <ImageView
+                android:id="@+id/cartShopBtn"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/searchBarCard"
+                app:layout_constraintEnd_toStartOf="@id/trackShopBtn"
+                app:layout_constraintTop_toTopOf="@id/searchBarCard"
+                app:srcCompat="@drawable/cart_new_icon"
+                app:tint="@color/primary" />
+
+            <!-- Track Order Icon -->
+            <ImageView
+                android:id="@+id/trackShopBtn"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                app:layout_constraintBottom_toBottomOf="@id/searchBarCard"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/searchBarCard"
+                app:srcCompat="@drawable/track_order"
+                app:tint="@color/primary" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Main Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:background="@color/lightCream"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <!-- Categories Section -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="16dp"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchShop"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/stroke_bg"
-                    android:drawablePadding="8dp"
-                    android:ems="10"
-                    android:hint="Search..."
-                    android:inputType="text"
-                    android:paddingHorizontal="16dp"/>
-
-                <ImageView
-                    android:id="@+id/cartShopBtn"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="5dp"
-                    app:srcCompat="@drawable/cart_new_icon" />
-
-                <ImageView
-                    android:layout_marginStart="5dp"
-                    android:id="@+id/trackShopBtn"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_gravity="center"
-                    app:srcCompat="@drawable/track_order" />
-
-
-            </LinearLayout>
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/scrollView2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     android:orientation="vertical"
-                    android:paddingBottom="70dp">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:layout_marginTop="5dp"
-                        android:id="@+id/searchResultsView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:layout_gravity="center"
-                        android:background="@android:color/white"
-                        android:padding="8dp"/>
+                    android:background="@color/white"
+                    android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="24dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Category"
+                        android:text="Categories"
                         android:textColor="@color/black"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
-                    <LinearLayout
+                    <com.google.android.material.chip.ChipGroup
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="10dp"
-                        android:layout_gravity="center"
-                        android:gravity="center">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textAlignment="center"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:textSize="16sp"
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/allBtn"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="All"
                             android:textColor="@color/black"
-                            android:background="@drawable/stroke_bg"
-                            >
+                            app:chipBackgroundColor="@color/white"
+                            app:chipStrokeColor="@color/outline"
+                            app:chipStrokeWidth="1dp" />
 
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textAlignment="center"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:textSize="16sp"
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/softwareBtn"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Software"
                             android:textColor="@color/black"
-                            android:background="@drawable/stroke_bg"
-                            >
+                            app:chipBackgroundColor="@color/white"
+                            app:chipStrokeColor="@color/outline"
+                            app:chipStrokeWidth="1dp" />
 
-                        </TextView>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:textAlignment="center"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:textSize="16sp"
+                        <com.google.android.material.chip.Chip
                             android:id="@+id/hardwareBtn"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hardware"
                             android:textColor="@color/black"
-                            android:background="@drawable/stroke_bg"
-                            >
+                            app:chipBackgroundColor="@color/white"
+                            app:chipStrokeColor="@color/outline"
+                            app:chipStrokeWidth="1dp" />
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        </TextView>
+            <!-- Popular Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Popular Products"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/seeAllPopular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="See All"
+                            android:textColor="@color/primary"
+                            android:textSize="14sp" />
                     </LinearLayout>
 
-                    <RelativeLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:background="@color/gemini_dark_background"
-                        android:layout_marginVertical="5dp"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp">
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/popularView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:clipToPadding="false"
+                            android:paddingEnd="4dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                            <TextView
-                                android:id="@+id/textView7"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="24dp"
-                                android:layout_marginTop="24dp"
-                                android:text="Popular"
-                                android:textColor="@color/gemini_accent"
-                                android:textSize="18sp"
-                                android:textStyle="bold" />
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:paddingBottom="15dp">
-
-                                <androidx.recyclerview.widget.RecyclerView
-                                    android:id="@+id/popularView"
-                                    android:layout_marginTop="10dp"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:clipToPadding="false"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-                                <ProgressBar
-                                    android:id="@+id/progressBarPopular"
-                                    style="?android:attr/progressBarStyle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:layout_constraintBottom_toBottomOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="@+id/popularView" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                   <RelativeLayout
-
-                       android:layout_width="match_parent"
-                       android:layout_height="wrap_content"
-                       android:background="@color/cream">
-
-                       <LinearLayout
-                           android:layout_width="match_parent"
-                           android:layout_height="wrap_content"
-                           android:orientation="vertical">
-
-                           <TextView
-                               android:layout_width="match_parent"
-                               android:layout_height="wrap_content"
-                               android:layout_marginHorizontal="24dp"
-                               android:layout_marginTop="24dp"
-                               android:text="Shop"
-                               android:textColor="@color/black"
-                               android:textSize="18sp"
-                               android:textStyle="bold" />
-
-                           <androidx.constraintlayout.widget.ConstraintLayout
-                               android:layout_width="match_parent"
-                               android:layout_height="wrap_content">
-
-                               <androidx.recyclerview.widget.RecyclerView
-                                   android:layout_marginTop="10dp"
-                                   android:id="@+id/shopView"
-                                   android:layout_width="match_parent"
-                                   android:layout_height="match_parent"
-                                   android:clipToPadding="false"
-                                   app:layout_constraintEnd_toEndOf="parent"
-                                   app:layout_constraintStart_toStartOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent"
-                                   android:nestedScrollingEnabled="false"/>
-
-                               <ProgressBar
-                                   android:id="@+id/progressBarShop"
-                                   style="?android:attr/progressBarStyle"
-                                   android:layout_width="wrap_content"
-                                   android:layout_height="wrap_content"
-                                   app:layout_constraintBottom_toBottomOf="parent"
-                                   app:layout_constraintEnd_toEndOf="parent"
-                                   app:layout_constraintStart_toStartOf="parent"
-                                   app:layout_constraintTop_toTopOf="@+id/shopView" />
-                           </androidx.constraintlayout.widget.ConstraintLayout>
-
-                       </LinearLayout>
-
-                   </RelativeLayout>
-
-
-
+                        <ProgressBar
+                            android:id="@+id/progressBarPopular"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/popularView" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
+            </androidx.cardview.widget.CardView>
 
+            <!-- Featured Promotion -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:background="@color/primary">
+
+                    <TextView
+                        android:id="@+id/promoTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="140dp"
+                        android:text="Summer Sale"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/promoDesc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="140dp"
+                        android:text="Get up to 20% off on all tech products"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/promoTitle"
+                        app:layout_constraintTop_toBottomOf="@id/promoTitle" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/shopNowPromo"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Shop Now"
+                        android:textColor="@color/white"
+                        app:strokeColor="@color/white"
+                        app:layout_constraintStart_toStartOf="@id/promoDesc"
+                        app:layout_constraintTop_toBottomOf="@id/promoDesc" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- All Products Section -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="All Products"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="0dp">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/shopView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:nestedScrollingEnabled="false"
+                            android:paddingStart="0dp"
+                            android:paddingEnd="0dp"
+                            android:paddingTop="0dp"
+                            android:paddingBottom="0dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ProgressBar
+                            android:id="@+id/progressBarShop"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/shopView" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Search Results -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/searchResultsView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:elevation="6dp"
+                android:padding="8dp"
+                android:visibility="gone" />
+
+            <!-- Spacer for bottom navigation -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

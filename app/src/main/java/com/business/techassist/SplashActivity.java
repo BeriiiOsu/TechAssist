@@ -1,11 +1,14 @@
 package com.business.techassist;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -15,15 +18,18 @@ import com.business.techassist.shopitems.DatabaseHelper;
 import com.business.techassist.utilities.FirebaseUtil;
 import com.business.techassist.UserCredentials.LoginScreen;
 import com.business.techassist.menucomponents.messages.messageActivity;
-import com.business.techassist.models.AdminModel;
+import com.business.techassist.admin_utils.AdminModel;
 import com.business.techassist.utilities.AndroidUtil;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.business.techassist.subscription.SubscriptionUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -32,6 +38,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         FirebaseApp.initializeApp(this);
         if (FirebaseApp.initializeApp(this) == null) {
             Log.e("FirebaseInit", "Firebase initialization failed!");
@@ -47,26 +54,17 @@ public class SplashActivity extends AppCompatActivity {
             return insets;
         });
 
+        if (!isInternetAvailable()) {
+            showNoInternetDialog();
+            return;
+        }
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> {
             Log.e("GlobalException", "Uncaught Exception: ", throwable);
         });
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-
-//
-//         Check if data exists before adding it
-//        db.collection("products").document("hardware").get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful() && !task.getResult().exists()) {
-//                        addHardwareToFirestore();
-//                        addSoftwareToFirestore();
-//                    }
-//                });
-
         if(FirebaseUtil.isLoggedIn() && getIntent().getExtras() != null){
             String userID = getIntent().getExtras().getString("userID");
-            FirebaseUtil.allUser().document(userID).get()
+            FirebaseUtil.allUserCollectionReference().document(userID).get()
                     .addOnCompleteListener(task -> {
                         if(task.isSuccessful()){
                             AdminModel model = task.getResult().toObject(AdminModel.class);
@@ -201,5 +199,23 @@ public class SplashActivity extends AppCompatActivity {
         component.put("price", price);
         component.put("description", description);
         return component;
+    }
+    private boolean isInternetAvailable() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (cm != null) {
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            return activeNetwork != null && activeNetwork.isConnected();
+        }
+        return false;
+    }
+
+    private void showNoInternetDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("No Internet Connection")
+                .setMessage("Please check your internet connection and try again.")
+                .setCancelable(false)
+                .setPositiveButton("Retry", (dialog, which) -> recreate())
+                .setNegativeButton("Exit", (dialog, which) -> finish())
+                .show();
     }
 }

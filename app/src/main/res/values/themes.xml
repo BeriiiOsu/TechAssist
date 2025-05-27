@@ -6,6 +6,24 @@
     </style>
 
     <style name="Theme.TechAssist" parent="Base.Theme.TechAssist" />
+    <style name="ShapeAppearanceOverlay.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 
+    <style name="Widget.Material3.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:paddingVertical">8dp</item>
+        <item name="android:paddingHorizontal">12dp</item>
+    </style>
+    
+    <!-- Custom dropdown menu style with white background -->
+    <style name="ModernDropdownStyle" parent="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+        <item name="boxBackgroundColor">@color/white</item>
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="endIconTint">@color/primary</item>
+        <item name="android:popupBackground">@color/white</item>
+    </style>
 
 </resources>

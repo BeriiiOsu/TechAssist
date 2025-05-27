@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.business.techassist.utilities.FirebaseUtil;
 import com.business.techassist.R;
-import com.business.techassist.models.AdminModel;
+import com.business.techassist.admin_utils.AdminModel;
 import com.business.techassist.menucomponents.messages.messageActivity;
 import com.business.techassist.utilities.AndroidUtil;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

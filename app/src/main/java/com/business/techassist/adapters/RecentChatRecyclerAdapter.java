@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.business.techassist.R;
-import com.business.techassist.models.AdminModel;
+import com.business.techassist.admin_utils.AdminModel;
 import com.business.techassist.menucomponents.messages.messageActivity;
 import com.business.techassist.models.ChatroomModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;

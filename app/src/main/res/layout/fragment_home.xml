@@ -1,863 +1,569 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/home_gradient_bg"
     tools:context=".home">
 
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#E0F7FA"
+    <!-- Top App Bar -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:elevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Toolbar Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif-medium"
+            android:text="TechAssist"
+            android:textSize="22sp"/>
+
         <LinearLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@color/white"
-            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingEnd="8dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="16dp">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/notifBtn"
+                style="@style/Widget.Material3.IconButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:icon="@drawable/notifications_icon"
+                app:iconTint="@color/white" />
 
-                <ImageView
-                    android:id="@+id/profileHomeBtn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:src="@drawable/user_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/notifBtn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/messageBtn"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/bell_icon" />
-
-                <ImageView
-                    android:id="@+id/messageBtn"
-                    android:layout_width="27dp"
-                    android:layout_height="27dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/messages" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/messageBtn"
+                style="@style/Widget.Material3.IconButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:icon="@drawable/messages"
+                app:iconTint="@color/white" />
+                
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/profileHomeBtn"
+                style="@style/Widget.Material3.IconButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:icon="@drawable/user_icon"
+                app:iconTint="@color/white" />
 
         </LinearLayout>
+    </com.google.android.material.appbar.MaterialToolbar>
 
-        <ScrollView
+    <!-- Main Content -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topAppBar">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+            android:orientation="vertical"
+            android:paddingVertical="16dp">
 
-            <LinearLayout
-                android:paddingBottom="75dp"
-                android:background="#FFEDFA"
+            <!-- Welcome Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginHorizontal="16dp"
-                            android:layout_marginTop="10dp">
-
-                            <TextView
-                                android:id="@+id/userName"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="sans-serif-black"
-                                android:text="Hi, User!"
-                                android:textColor="#000000"
-                                android:textSize="25sp"
-                                android:textStyle="bold"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <TextView
-                                android:id="@+id/textView3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="how are you today"
-                                android:textColor="#919191"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/userName" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/imageView4"
-                            android:layout_width="match_parent"
-                            android:layout_height="150dp"
-                            android:layout_marginHorizontal="16dp"
-                            android:layout_marginVertical="8dp"
-                            app:cardBackgroundColor="#1A1F2B"
-                            app:cardCornerRadius="8dp"
-                            app:cardElevation="4dp"
-                            app:strokeColor="#2D3440">
-
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:orientation="vertical"
-                                    android:layout_height="wrap_content">
-
-                                    <LinearLayout
-                                        android:id="@+id/containerPlan"
-                                        android:layout_marginStart="15dp"
-                                        android:layout_marginTop="20dp"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="horizontal">
-
-                                        <TextView
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Current Plan: "
-                                            android:textColor="#E0E0E0"
-                                            android:textSize="18sp"
-                                            android:textStyle="bold" />
-
-                                        <TextView
-                                            android:id="@+id/userPlan"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Basic"
-                                            android:textColor="#00C9A7"
-                                            android:textSize="18sp"
-                                            android:textStyle="bold" />
-
-                                    </LinearLayout>
-
-                                    <RelativeLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="1dp"
-                                        android:layout_marginStart="10dp"
-                                        android:layout_marginEnd="10dp"
-                                        android:layout_marginTop="5dp"
-                                        android:backgroundTint="#39424E"
-                                        android:background="@drawable/black_line"/>
-
-                                    <TextView
-                                        android:layout_marginStart="15dp"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Features"
-                                        android:textColor="#E0E0E0"
-                                        android:textSize="18sp"
-                                        android:textStyle="bold" />
-                                    <TextView
-                                        android:id="@+id/planFeatures"
-                                        android:layout_marginStart="30dp"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="- Limited support \n- Basic troubleshooting tips"
-                                        android:textColor="#FFC947"
-                                        android:textSize="15sp"
-                                        android:textStyle="bold" />
-
-                                </LinearLayout>
-
-
-                                <RelativeLayout
-                                    android:id="@+id/upgradeBtn"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_margin="10dp"
-                                    android:backgroundTint="#00C9A7"
-                                    android:background="@drawable/button_bg_black"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="30dp"
-                                    tools:ignore="HardcodedText">
-
-                                    <TextView
-                                        android:layout_marginStart="30dp"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Upgrade now"
-                                        android:textColor="#1A1F2B"
-                                        android:layout_centerInParent="true"
-                                        android:textSize="12sp"
-                                        android:textStyle="bold" />
-
-                                </RelativeLayout>
-
-                            </RelativeLayout>
-
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:layout_marginBottom="5dp">
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/userName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hi, User!"
+                        android:fontFamily="sans-serif-medium"
+                        android:textSize="24sp"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="How can we assist you today?"
+                        android:textSize="16sp"
+                        android:textColor="#757575" />
+
+                    <!-- Plan Card -->
+                    <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginTop="20dp"
+                        app:cardBackgroundColor="#F5F9FF"
+                        app:cardCornerRadius="16dp"
+                        app:strokeColor="#E0E0E0"
+                        app:strokeWidth="1dp">
 
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginTop="30dp"
-                            android:minHeight="50dp">
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="20dp">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginHorizontal="16dp"
-                                android:baselineAligned="false"
                                 android:orientation="horizontal"
-                                android:gravity="center"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
+                                android:gravity="center_vertical">
 
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_weight="1">
-
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:id="@+id/consultationCard"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        app:cardCornerRadius="16dp"
-                                        app:strokeWidth="0dp"
-                                        android:layout_margin="5dp"
-                                        app:cardElevation="8dp"
-                                        android:layout_marginEnd="8dp">
-
-                                        <LinearLayout
-                                            android:background="@color/white"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:orientation="vertical"
-                                            android:padding="16dp">
-
-                                            <TextView
-                                                android:id="@+id/title"
-                                                android:fontFamily="sans-serif-black"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:text="Get Tech Support Now!"
-                                                android:textColor="#1E88E5"
-                                                android:textSize="20sp"
-                                                android:textStyle="bold" />
-
-                                            <TextView
-                                                android:id="@+id/subtitle"
-                                                android:layout_width="wrap_content"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginTop="4dp"
-                                                android:text="Consult with IT experts via chat or video instantly."
-                                                android:textColor="#666"
-                                                android:textSize="14sp" />
-
-                                            <ImageView
-                                                android:layout_width="match_parent"
-                                                android:layout_height="120dp"
-                                                android:src="@drawable/model"
-                                                tools:ignore="ContentDescription,ImageContrastCheck" />
-
-
-                                        </LinearLayout>
-                                    </com.google.android.material.card.MaterialCardView>
-
-                                </RelativeLayout>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
+                                <TextView
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="vertical">
+                                    android:text="Current Plan:"
+                                    android:textSize="16sp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textColor="#757575" />
 
-                                    <!-- Option Card Template -->
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="5dp"
-                                        android:layout_marginBottom="8dp"
-                                        app:cardCornerRadius="16dp"
-                                        app:cardElevation="4dp"
-                                        app:strokeWidth="0dp">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:background="@color/white"
-                                            android:orientation="horizontal"
-                                            android:padding="16dp">
-
-                                            <ImageView
-                                                android:layout_width="30dp"
-                                                android:layout_height="30dp"
-                                                android:src="@drawable/wrench_icon"
-                                                app:tint="#1E3A8A"
-                                                tools:ignore="ContentDescription" />
-
-                                            <LinearLayout
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_weight="1"
-                                                android:orientation="vertical">
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="sans-serif-black"
-                                                    android:text="Remote Support"
-                                                    android:textColor="@color/black"
-                                                    android:textSize="12sp"
-                                                    android:textStyle="bold" />
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="Get instant remote troubleshooting."
-                                                    android:textColor="#666"
-                                                    android:textSize="9sp" />
-                                            </LinearLayout>
-                                        </LinearLayout>
-                                    </com.google.android.material.card.MaterialCardView>
-
-                                    <!-- Pharmacy Card -->
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="5dp"
-                                        android:layout_marginBottom="8dp"
-                                        app:cardCornerRadius="16dp"
-                                        app:cardElevation="4dp"
-                                        app:strokeWidth="0dp">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:background="@color/white"
-                                            android:orientation="horizontal"
-                                            android:padding="16dp">
-
-                                            <ImageView
-                                                android:layout_width="30dp"
-                                                android:layout_height="30dp"
-                                                android:src="@drawable/track_order"
-                                                app:tint="#28A745"
-                                                tools:ignore="ContentDescription" />
-
-                                            <LinearLayout
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_weight="1"
-                                                android:orientation="vertical">
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="sans-serif-black"
-                                                    android:text="Subscription Plans"
-                                                    android:textColor="@color/black"
-                                                    android:textSize="12sp"
-                                                    android:textStyle="bold" />
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="Access premium tech services."
-                                                    android:textColor="#666"
-                                                    android:textSize="10sp" />
-                                            </LinearLayout>
-                                        </LinearLayout>
-                                    </com.google.android.material.card.MaterialCardView>
-
-                                    <!-- Diagnostics Card -->
-                                    <com.google.android.material.card.MaterialCardView
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="5dp"
-                                        app:cardCornerRadius="16dp"
-                                        app:cardElevation="4dp"
-                                        app:strokeWidth="0dp">
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:background="@color/white"
-                                            android:orientation="horizontal"
-                                            android:padding="16dp">
-
-                                            <ImageView
-                                                android:layout_width="30dp"
-                                                android:layout_height="30dp"
-                                                android:src="@drawable/store_icon"
-                                                app:tint="#6C757D"
-                                                tools:ignore="ContentDescription" />
-
-                                            <LinearLayout
-                                                android:layout_width="0dp"
-                                                android:layout_height="wrap_content"
-                                                android:layout_marginStart="16dp"
-                                                android:layout_weight="1"
-                                                android:orientation="vertical">
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="sans-serif-black"
-                                                    android:text="Parts Store"
-                                                    android:textColor="@color/black"
-                                                    android:textSize="12sp"
-                                                    android:textStyle="bold" />
-
-                                                <TextView
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:text="Purchase hardware components."
-                                                    android:textColor="#666"
-                                                    android:textSize="10sp" />
-                                            </LinearLayout>
-                                        </LinearLayout>
-                                    </com.google.android.material.card.MaterialCardView>
-
-                                </LinearLayout>
-
+                                <TextView
+                                    android:id="@+id/userPlan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    android:text="Basic"
+                                    android:textSize="16sp"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textColor="#4285F4" />
 
                             </LinearLayout>
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-                
-                <RelativeLayout
-                    android:layout_marginVertical="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    >
-
-                    <LinearLayout
-                        android:paddingVertical="20dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:fontFamily="sans-serif-black"
-                            android:layout_marginVertical="3dp"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Do you have a Referral Code?"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Claim your discounts or package here."
-                            android:textColor="#666"
-                            android:textSize="14sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:layout_width="0dp"
-                                android:layout_height="55dp"
-                                android:layout_weight="1"
-                                style="@style/defaultTextBox"
-                                android:gravity="center"
-                                app:boxBackgroundMode="outline"
-                                android:hint="Enter your Referral Code"
-                                android:textColorHint="@color/gray"
-                                app:boxStrokeWidth="1dp"
-                                android:focusable="false"
-                                android:layout_marginEnd="10dp"
-                                android:layout_gravity="center"
-                                tools:ignore="HardcodedText">
-
-                                <EditText
-                                    android:id="@+id/referralCodeTxt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:inputType="text"
-                                    android:textSize="14sp"
-                                    android:textColor="@color/black"
-                                    tools:ignore="Autofill,LabelFor,TextContrastCheck" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:cardBackgroundColor="#003092"
-                                app:cardCornerRadius="30dp"
-                                android:gravity="center"
-                                android:layout_gravity="center"
-                                >
-
-                                <TextView
-                                    android:paddingVertical="12dp"
-                                    android:paddingHorizontal="38dp"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Claim"
-                                    android:textStyle="bold"
-                                    android:textColor="@color/white"/>
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_marginTop="5dp"
-                    android:background="@color/cream"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginHorizontal="16dp"
-                            android:layout_marginTop="16dp"
-                            android:orientation="vertical">
-
                             <TextView
-                                android:id="@+id/textView5"
-                                android:fontFamily="sans-serif-black"
+                                android:id="@+id/planFeatures"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Computer Technicians"
-                                android:textColor="@color/black"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
+                                android:layout_marginTop="12dp"
+                                android:text="• Basic troubleshooting\n• Limited support hours"
+                                android:textSize="14sp"
+                                android:lineSpacingExtra="6dp"
+                                android:textColor="#757575" />
 
-                            <TextView
-                                android:id="@+id/textView6"
-                                android:layout_marginTop="5dp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Get professional support from our IT technicians"
-                                android:textColor="@color/gray"
-                                android:textSize="14sp" />
-
-
-                        </LinearLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:minHeight="100dp">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/itView"
-                                android:layout_marginHorizontal="16dp"
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/upgradeBtn"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:clipToPadding="false"
-                                android:paddingStart="8dp"
-                                android:paddingEnd="8dp"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                android:layout_height="56dp"
+                                android:layout_marginTop="16dp"
+                                android:text="Upgrade Now"
+                                android:textAllCaps="false"
+                                app:cornerRadius="12dp"
+                                android:textSize="16sp"
+                                android:backgroundTint="#4285F4"
+                                android:fontFamily="sans-serif-medium"
+                                app:elevation="2dp"
+                                />
 
-                            <ProgressBar
-                                android:id="@+id/progressBarIT"
-                                style="?android:attr/progressBarStyle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="@+id/itView"
-                                app:layout_constraintTop_toTopOf="@+id/itView" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                        </LinearLayout>
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Quick Actions Title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quick Actions"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="@color/white"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- Quick Actions Grid -->
+            <GridLayout
+                android:id="@+id/action_grid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false"
+                android:rowOrderPreserved="false">
+
+                <!-- Remote Support -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="4dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/wrench_icon"
+                            app:tint="#4285F4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Remote Support"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="#757575" />
 
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                </RelativeLayout>
+                <!-- Subscription Plans -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="4dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
 
-                <RelativeLayout
-                    android:layout_marginVertical="10dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/track_order"
+                            app:tint="#4285F4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Plans"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="#757575" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="4dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/store_icon"
+                            app:tint="#4285F4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Parts Store"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="#757575" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="120dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_margin="4dp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:background="@color/white"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/user_icon"
+                            app:tint="#4285F4" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="My Account"
+                            android:textSize="14sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="#757575" />
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </GridLayout>
+
+            <!-- Referral Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    >
+                    android:orientation="vertical"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Have a Referral Code?"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Claim your discounts or packages"
+                        android:textSize="14sp"
+                        android:textColor="#757575" />
 
                     <LinearLayout
-                        android:paddingVertical="20dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:orientation="vertical">
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_marginVertical="3dp"
-                            android:textColor="#1E88E5"
-                            android:layout_width="wrap_content"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-black"
-                            android:text="Need Fast Support? Get QuickFix!"
+                            android:layout_weight="1"
+                            android:hint="Enter code"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            app:boxCornerRadiusBottomEnd="12dp"
+                            app:boxCornerRadiusBottomStart="12dp"
+                            app:boxCornerRadiusTopEnd="12dp"
+                            app:boxCornerRadiusTopStart="12dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/referralCodeTxt"
+                                android:layout_width="match_parent"
+                                android:textColor="@color/black"
+                                android:layout_height="wrap_content" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="56dp"
+                            android:layout_marginStart="8dp"
+                            android:text="Claim"
+                            android:textAllCaps="false"
+                            app:cornerRadius="12dp"
                             android:textSize="16sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Fastest way to check your device"
-                            android:textColor="#666"
-                            android:textSize="14sp" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <ImageView
-                                        android:layout_marginTop="20dp"
-                                        android:layout_width="100dp"
-                                        android:layout_marginStart="30dp"
-                                        android:layout_height="50dp"
-                                        android:src="@drawable/quickfix"/>
-
-                                    <TextView
-                                        android:layout_width="176dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginStart="30dp"
-                                        android:text="Guaranteed tech solutions within minutes—whether remotely or on-site. Get your device back in shape fast, or your money back."
-                                        android:textColor="#666"
-                                        android:textSize="14sp" />
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="150dp"
-                                    android:src="@drawable/model3"
-                                    />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_marginTop="20dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                app:cardBackgroundColor="#003092"
-                                app:cardCornerRadius="30dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingHorizontal="38dp"
-                                    android:paddingVertical="12dp"
-                                    android:text="Upgrade now!"
-                                    android:textColor="@color/white"
-                                    android:textStyle="bold" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </LinearLayout>
+                            android:backgroundTint="#4285F4" />
 
                     </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                </RelativeLayout>
+            <!-- QuickFix Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="10dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/orange_rec_bg">
+                    android:background="@color/white"
+                    android:padding="24dp">
 
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Need Fast Support?"
+                        android:textSize="20sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toStartOf="@id/imageView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Guaranteed solutions within minutes"
+                        android:textSize="14sp"
+                        android:textColor="#757575"
+                        app:layout_constraintEnd_toStartOf="@id/imageView"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView5" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:src="@drawable/model3"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Get QuickFix"
+                        android:textAllCaps="false"
+                        app:cornerRadius="12dp"
+                        android:textSize="16sp"
+                        android:backgroundTint="#4285F4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView6" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Technicians Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    android:padding="24dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Technical Support Experts"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/black"
+                        />
+                        
+                    <!-- Sorting Buttons -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
-                        android:orientation="vertical"
-                        android:paddingVertical="20dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:layout_width="150dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginVertical="3dp"
-                                        android:fontFamily="sans-serif-black"
-                                        android:text="Want TechAssist for Your Enterprise?"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        android:textStyle="bold" />
-
-                                    <TextView
-                                        android:layout_marginTop="10dp"
-                                        android:layout_width="176dp"
-                                        android:layout_height="wrap_content"
-                                        android:text="Provide reliable tech support services for your employees or members—whether online, on-site, or in-shop."
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="14sp" />
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:layout_weight="1">
-
-                                <ImageView
-                                    android:layout_width="150dp"
-                                    android:layout_height="130dp"
-                                    android:src="@drawable/model_bag" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        android:gravity="start|center_vertical">
+                        
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="20dp"
-                            android:orientation="horizontal">
-
-
-                            <com.google.android.material.card.MaterialCardView
-                                android:layout_width="wrap_content"
+                            android:text="Sort by:"
+                            android:textSize="14sp"
+                            android:textColor="@color/black"
+                            android:fontFamily="sans-serif-medium"
+                            android:layout_marginEnd="8dp"/>
+                            
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/sortDropdownLayout"
+                            style="@style/SortDropdownStyle"
+                            android:layout_width="140dp"
+                            android:layout_height="40dp"
+                            android:hint="">
+                            
+                            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                                android:id="@+id/sortDropdown"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                app:cardBackgroundColor="@color/white"
-                                app:cardCornerRadius="30dp"
-                                app:strokeWidth="0dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:paddingHorizontal="38dp"
-                                    android:paddingVertical="12dp"
-                                    android:text="Inquire now!"
-                                    android:textColor="@color/PurpleBtn"
-                                    android:textStyle="bold" />
-
-                            </com.google.android.material.card.MaterialCardView>
-
-                        </LinearLayout>
-
+                                android:inputType="none"
+                                android:textSize="13sp"
+                                android:textColor="@color/black"
+                                android:fontFamily="sans-serif-medium"
+                                android:paddingVertical="0dp"
+                                android:paddingHorizontal="4dp"
+                                android:ellipsize="end"
+                                android:singleLine="true"
+                                android:maxLines="1"/>
+                                
+                        </com.google.android.material.textfield.TextInputLayout>
+                        
+                        <!-- Empty space to push everything to the left -->
+                        <Space
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+                            
                     </LinearLayout>
 
-                </RelativeLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/itView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:paddingStart="4dp"
+                        android:paddingEnd="4dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        />
 
-            </LinearLayout>
-        </ScrollView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

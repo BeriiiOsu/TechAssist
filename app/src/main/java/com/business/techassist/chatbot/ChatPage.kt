@@ -46,12 +46,12 @@ fun ChatPage(modifier: Modifier = Modifier, viewModel: ChatViewModel) {
             messageList = viewModel.messageList
         )
         MessageInput(
-            onMessageSend = {
-                viewModel.sendMessage(it)
-            }
+            onMessageSend = { viewModel.sendMessage(it) },
+            isTyping = viewModel.isBotTyping
         )
     }
 }
+
 
 @Composable
 fun MessageList(modifier: Modifier = Modifier, messageList: List<MessageModel>) {
@@ -133,7 +133,10 @@ fun formatBoldText(text: String): AnnotatedString {
 }
 
 @Composable
-fun MessageInput(onMessageSend: (String) -> Unit) {
+fun MessageInput(
+    onMessageSend: (String) -> Unit,
+    isTyping: Boolean
+) {
     var message by remember { mutableStateOf("") }
 
     Row(
@@ -150,19 +153,28 @@ fun MessageInput(onMessageSend: (String) -> Unit) {
                 .background(GeminiDarkBackground, RoundedCornerShape(8.dp)),
             value = message,
             onValueChange = { message = it },
-            placeholder = { Text(text = "Describe your problem...", color = Color.Gray) },
+            enabled = !isTyping, // 👈 Disable when bot is typing
+            placeholder = {
+                Text(
+                    text = if (isTyping) "Please wait..." else "Describe your problem...",
+                    color = Color.Gray
+                )
+            },
             textStyle = androidx.compose.ui.text.TextStyle(color = Color.White)
         )
-        IconButton(onClick = {
-            if (message.isNotEmpty()) {
-                onMessageSend(message)
-                message = ""
-            }
-        }) {
+        IconButton(
+            onClick = {
+                if (message.isNotEmpty()) {
+                    onMessageSend(message)
+                    message = ""
+                }
+            },
+            enabled = !isTyping
+        ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.Send,
                 contentDescription = "Send",
-                tint = GeminiAccent
+                tint = if (isTyping) Color.Gray else GeminiAccent
             )
         }
     }

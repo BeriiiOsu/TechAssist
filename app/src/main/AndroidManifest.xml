@@ -27,6 +27,36 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TechAssist"
         tools:targetApi="31">
+
+        <service
+            android:name=".notif.FirebaseNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".admin_utils.admin"
+            android:exported="false" />
+        <activity
+            android:name=".admin_utils.AdminStatusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".remote.RemoteSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".subscription.SubscriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".subscription.PlanDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoyaltyProgram"
+            android:exported="false" />
+        <activity
+            android:name=".search.SearchActivity"
+            android:exported="false" />
         <activity
             android:name=".shopitems.ProductDetails"
             android:exported="false" />
@@ -39,7 +69,7 @@
             android:name=".profileHome"
             android:exported="false" />
         <activity
-            android:name=".admin_details"
+            android:name=".admin_utils.admin_details"
             android:exported="true" />
         <activity
             android:name=".menucomponents.cart.cart"
@@ -77,7 +107,10 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".NotificationActivity"
+            android:name=".notif.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".transactionhistory.TransactionHistoryActivity"
             android:exported="false" />
         <activity
             android:name=".UserCredentials.SignupScreen"
@@ -88,6 +121,21 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SecurityPrivacyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".menucomponents.OrderDetailsActivity"
+            android:exported="false"
+            android:label="Order Details"
+            android:parentActivityName=".menucomponents.trackOrderMenu">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".menucomponents.trackOrderMenu" />
+        </activity>
     </application>
 
 </manifest>
